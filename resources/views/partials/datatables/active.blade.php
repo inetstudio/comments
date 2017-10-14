@@ -1,0 +1,1 @@
+<input type="checkbox" name="is_active[{{ $id }}]" id="active_{{ $id }}" value="1" class="switchery" data-target="{{ route('back.comments.activity', ['id' => $id]) }}" {{ ($is_active) ? 'checked' : '' }} />

@@ -1,0 +1,30 @@
+{
+    "name": "inetstudio/comments",
+    "description": "Package for comments",
+    "homepage": "https://github.com/inetstudio/comments",
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Konstantin Bukin",
+        "email": "bukin@inetstudio.ru"
+      }
+    ],
+    "require": {
+      "arcanedev/no-captcha": "^5.0",
+      "guzzlehttp/guzzle": "^6.3",
+      "inetstudio/admin-panel": "1.5.*",
+      "kalnoy/nestedset": "^4.3"
+    },
+    "autoload": {
+      "psr-4": {
+        "InetStudio\\Comments\\": "src/"
+      }
+    },
+    "extra": {
+      "laravel": {
+        "providers": [
+          "InetStudio\\Comments\\CommentsServiceProvider"
+        ]
+      }
+    }
+}
