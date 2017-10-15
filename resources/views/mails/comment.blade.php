@@ -2,4 +2,4 @@
 <strong>Email: </strong>{{ $comment->email }}<br/>
 <strong>Сообщение: </strong>{{ $comment->message }}
 <br/>
-<a href="{{ route('back.comments.edit', [$id]) }}">Перейти</a>
+<a href="{{ route('back.comments.edit', [$comment->id]) }}">Перейти</a>

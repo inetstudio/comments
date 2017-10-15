@@ -34,6 +34,6 @@ class NewCommentMail extends Mailable
         return $this->from(config('mail.from.address'), config('mail.from.name'))
             ->to(config('comments.mails.to'), '')
             ->subject($subject)
-            ->view('admin.module.comments::mails.comment', ['comments' => $this->comment]);
+            ->view('admin.module.comments::mails.comment', ['comment' => $this->comment]);
     }
 }
