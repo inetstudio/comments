@@ -99,6 +99,8 @@ class CommentsController extends Controller
         $item->is_active = strip_tags($request->get('is_active'));
         $item->save();
 
+        \Event::fire('inetstudio.comments.cache.clear', md5($item->commentable_type.$item->commentable_id));
+
         Session::flash('success', 'Комментарий успешно '.$action);
 
         return redirect()->to(route('back.comments.edit', $item->fresh()->id));
@@ -138,6 +140,8 @@ class CommentsController extends Controller
             $item->update([
                 'is_active' => $request->get('val'),
             ]);
+
+            \Event::fire('inetstudio.comments.cache.clear', md5($item->commentable_type.$item->commentable_id));
 
             return response()->json([
                 'success' => true,

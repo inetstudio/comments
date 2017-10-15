@@ -101,7 +101,11 @@ class CommentModel extends Model
         $traverse = function ($comments) use (&$traverse, $data) {
             foreach ($comments as $comment) {
                 $data[$comment->id]['id'] = $comment->id;
-                $data[$comment->id]['user'] = $comment->user;
+                $data[$comment->id]['user'] = [
+                    'object' => $comment->user,
+                    'name' => $comment->name,
+                ];
+                $data[$comment->id]['datetime'] = $comment->created_at;
                 $data[$comment->id]['message'] = $comment->message;
                 $data[$comment->id]['items'] = $traverse($comment->children);
             }

@@ -25,4 +25,14 @@ trait HasComments
     {
         return $this->morphMany(static::getCommentClassName(), 'commentable');
     }
+
+    /**
+     * Возвращаем комментарии в виде иерархии.
+     *
+     * @return array
+     */
+    public function commentsTree()
+    {
+        return CommentModel::getTree($this);
+    }
 }
