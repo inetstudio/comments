@@ -94,7 +94,7 @@ class CommentModel extends Model
      */
     public static function getTree($object)
     {
-        $tree = $object->comments->toTree();
+        $tree = $object->comments()->where('is_active', 1)->get()->toTree();
 
         $data = [];
 
