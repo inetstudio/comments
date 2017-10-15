@@ -30,6 +30,7 @@ class CommentModel extends Model
      */
     protected $fillable = [
         'is_read', 'is_active', 'user_id', 'name', 'email', 'message',
+        'commentable_id', 'commentable_type',
     ];
 
     /**
