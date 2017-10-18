@@ -28,6 +28,7 @@ return [
         ],
         'columns' => [
             'index' => [
+                ['data' => 'checkbox', 'name' => 'checkbox', 'title' => '', 'orderable' => false, 'searchable' => false],
                 ['data' => 'id', 'name' => 'id', 'title' => 'ID'],
                 ['data' => 'read', 'name' => 'is_read', 'title' => 'Прочитано', 'searchable' => false],
                 ['data' => 'active', 'name' => 'is_active', 'title' => 'Активность', 'searchable' => false],

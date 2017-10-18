@@ -1,7 +1,7 @@
 @extends('admin::layouts.app')
 
 @php
-    $title = ($item->id) ? 'Просмотр комментария' : '';
+    $title = 'Добавление комментария';
 @endphp
 
 @section('title', $title)
@@ -24,11 +24,9 @@
     <div class="wrapper wrapper-content">
         {!! Form::info() !!}
 
-        {!! Form::open(['url' => route('back.comments.update', [$item->id]), 'id' => 'mainForm', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['url' => route('back.comments.store'), 'id' => 'mainForm', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) !!}
 
-            {{ method_field('PUT') }}
-
-            {!! Form::hidden('comment_id', $item->id) !!}
+            {!! Form::hidden('parent_comment_id', $item->id) !!}
 
             {!! Form::buttons('', '', ['back' => 'back.comments.index']) !!}
 
@@ -44,7 +42,7 @@
                             <div id="collapseMain" class="panel-collapse collapse in" aria-expanded="true">
                                 <div class="panel-body">
 
-                                    {!! Form::string('name', $item->name, [
+                                    {!! Form::string('comment_name', $item->name, [
                                         'label' => [
                                             'title' => 'Имя',
                                         ],
@@ -54,7 +52,7 @@
                                         ],
                                     ]) !!}
 
-                                    {!! Form::string('email', $item->email, [
+                                    {!! Form::string('comment_email', $item->email, [
                                         'label' => [
                                             'title' => 'Email',
                                         ],
@@ -64,30 +62,24 @@
                                         ],
                                     ]) !!}
 
-                                    {!! Form::wysiwyg('message', $item->message, [
+                                    {!! Form::wysiwyg('comment_message', $item->message, [
                                         'label' => [
-                                            'title' => 'Сообщение',
+                                            'title' => 'Комментарий',
                                         ],
                                         'field' => [
                                             'class' => 'form-control',
-                                            'id' => 'message',
+                                            'id' => 'comment_message',
                                             'disabled' => true,
                                         ],
                                     ]) !!}
 
-                                    {!! Form::radios('is_active', $item->is_active, [
+                                    {!! Form::wysiwyg('message', '', [
                                         'label' => [
-                                            'title' => 'Отображать на сайте',
+                                            'title' => 'Ответ на комментарий',
                                         ],
-                                        'radios' => [
-                                            [
-                                                'label' => 'Да',
-                                                'value' => 1,
-                                            ],
-                                            [
-                                                'label' => 'Нет',
-                                                'value' => 0,
-                                            ]
+                                        'field' => [
+                                            'class' => 'form-control',
+                                            'id' => 'message',
                                         ],
                                     ]) !!}
 

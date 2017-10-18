@@ -2,6 +2,7 @@
 
 namespace InetStudio\Comments\Requests;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SaveCommentRequest extends FormRequest
@@ -24,6 +25,7 @@ class SaveCommentRequest extends FormRequest
     public function messages()
     {
         return [
+            'message.text.required' => 'Поле «Ответ на комментарий» обязательно для заполнения',
             'is_active.required' => 'Поле «Активность» обязательно для заполнения',
             'is_active.boolean' => 'Поле «Активность» должно содержать логическое значение',
         ];
@@ -32,12 +34,17 @@ class SaveCommentRequest extends FormRequest
     /**
      * Правила проверки запроса.
      *
+     * @param Request $request
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
+        $rules = ($request->filled('parent_comment_id')) ? [
+            'message.text' => 'required',
+        ] : [
             'is_active' => 'required|boolean',
         ];
+
+        return $rules;
     }
 }

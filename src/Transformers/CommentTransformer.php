@@ -15,6 +15,9 @@ class CommentTransformer extends TransformerAbstract
     public function transform(CommentModel $comment)
     {
         return [
+            'checkbox' => view('admin.module.comments::partials.datatables.checkbox', [
+                'id' => $comment->id,
+            ])->render(),
             'id' => (int) $comment->id,
             'read' => view('admin.module.comments::partials.datatables.read', [
                 'is_read' => $comment->is_read,
