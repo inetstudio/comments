@@ -14,7 +14,7 @@ class CommentObserver
      * @param CommentModel $comment
      * @return void
      */
-    public function created(CommentModel $comment)
+    public function created(CommentModel $comment): void
     {
         if (config('comments.mails.to')) {
             if (config('comments.queue.enable')) {

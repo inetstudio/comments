@@ -1,6 +1,6 @@
 <?php
 
-namespace InetStudio\Comments\Controllers;
+namespace InetStudio\Comments\Http\Controllers\Back;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use InetStudio\Comments\Models\CommentModel;
 use InetStudio\AdminPanel\Traits\DatatablesTrait;
-use InetStudio\Comments\Requests\SaveCommentRequest;
+use InetStudio\Comments\Http\Requests\Back\SaveCommentRequest;
 use InetStudio\Comments\Transformers\CommentTransformer;
 
 /**

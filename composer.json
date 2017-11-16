@@ -23,7 +23,7 @@
     "extra": {
       "laravel": {
         "providers": [
-          "InetStudio\\Comments\\CommentsServiceProvider"
+          "InetStudio\\Comments\\Providers\\CommentsServiceProvider"
         ]
       }
     }

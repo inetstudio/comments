@@ -3,8 +3,8 @@
 namespace InetStudio\Comments\Notifications;
 
 use Illuminate\Notifications\Notification;
-use InetStudio\Comments\Mail\NewCommentMail;
 use InetStudio\Comments\Models\CommentModel;
+use InetStudio\Comments\Mails\NewCommentMail;
 
 class NewCommentNotification extends Notification
 {
@@ -23,12 +23,14 @@ class NewCommentNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
-        return ['mail', 'database'];
+        return [
+            'mail', 'database',
+        ];
     }
 
     /**
@@ -37,7 +39,7 @@ class NewCommentNotification extends Notification
      * @param $notifiable
      * @return NewCommentMail
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): NewCommentMail
     {
         return (new NewCommentMail($this->comment));
     }
@@ -48,7 +50,7 @@ class NewCommentNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toDatabase($notifiable): array
     {
         return [
             'comment_id' => $this->comment->id,

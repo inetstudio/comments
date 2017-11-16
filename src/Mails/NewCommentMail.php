@@ -1,6 +1,6 @@
 <?php
 
-namespace InetStudio\Comments\Mail;
+namespace InetStudio\Comments\Mails;
 
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -27,13 +27,21 @@ class NewCommentMail extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): NewCommentMail
     {
         $subject = config('app.name').' | '.((config('comments.mails.subject')) ? config('comments.mails.subject') : 'Новый комментарий');
+        $headers = (config('comments.mails.headers')) ? config('comments.mails.headers') : [];
 
         return $this->from(config('mail.from.address'), config('mail.from.name'))
             ->to(config('comments.mails.to'), '')
             ->subject($subject)
+            ->withSwiftMessage(function ($message) use ($headers) {
+                $messageHeaders = $message->getHeaders();
+
+                foreach ($headers as $header => $value) {
+                    $messageHeaders->addTextHeader($header, $value);
+                }
+            })
             ->view('admin.module.comments::mails.comment', ['comment' => $this->comment]);
     }
 }

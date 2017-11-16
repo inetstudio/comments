@@ -1,6 +1,6 @@
 <?php
 
-namespace InetStudio\Comments\Traits;
+namespace InetStudio\Comments\Models\Traits;
 
 use InetStudio\Comments\Models\CommentModel;
 
@@ -11,7 +11,7 @@ trait HasComments
      *
      * @return string
      */
-    public static function getCommentClassName()
+    public static function getCommentClassName(): string
     {
         return CommentModel::class;
     }
@@ -31,7 +31,7 @@ trait HasComments
      *
      * @return array
      */
-    public function commentsTree()
+    public function commentsTree(): array
     {
         return CommentModel::getTree($this);
     }

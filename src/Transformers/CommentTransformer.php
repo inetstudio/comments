@@ -9,10 +9,12 @@ use InetStudio\Comments\Models\CommentModel;
 class CommentTransformer extends TransformerAbstract
 {
     /**
+     * Подготовка данных для отображения в таблице.
+     *
      * @param CommentModel $comment
      * @return array
      */
-    public function transform(CommentModel $comment)
+    public function transform(CommentModel $comment): array
     {
         return [
             'checkbox' => view('admin.module.comments::partials.datatables.checkbox', [

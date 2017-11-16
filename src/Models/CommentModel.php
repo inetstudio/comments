@@ -9,6 +9,55 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * InetStudio\Comments\Models\CommentModel
+ *
+ * @property int $id
+ * @property int $is_read
+ * @property int $is_active
+ * @property int $commentable_id
+ * @property string $commentable_type
+ * @property int $_lft
+ * @property int $_rgt
+ * @property int|null $parent_id
+ * @property string $user_id
+ * @property string $name
+ * @property string $email
+ * @property string|null $message
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
+ * @property-read \Kalnoy\Nestedset\Collection|\InetStudio\Comments\Models\CommentModel[] $children
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $commentable
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \InetStudio\Comments\Models\CommentModel|null $parent
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel active()
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel d()
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel inactive()
+ * @method static \Illuminate\Database\Query\Builder|\InetStudio\Comments\Models\CommentModel onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel unread()
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereCommentableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereCommentableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereIsRead($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereLft($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereRgt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\InetStudio\Comments\Models\CommentModel withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\InetStudio\Comments\Models\CommentModel withoutTrashed()
+ * @mixin \Eloquent
+ */
 class CommentModel extends Model
 {
     use NodeTrait;
@@ -56,21 +105,44 @@ class CommentModel extends Model
         return $arr;
     }
 
+    /**
+     * Заготовка запроса "Непрочитанные комментарии".
+     *
+     * @param $query
+     * @return mixed
+     */
     public function scopeUnread($query)
     {
         return $query->where('is_read', 0);
     }
 
+    /**
+     * Заготовка запроса "Активные комментарии".
+     *
+     * @param $query
+     * @return mixed
+     */
     public function scopeActive($query)
     {
         return $query->where('is_active', 1);
     }
 
+    /**
+     * Заготовка запроса "Неактивные комментарии".
+     *
+     * @param $query
+     * @return mixed
+     */
     public function scopeInactive($query)
     {
         return $query->where('is_active', 0);
     }
 
+    /**
+     * Полиморфное отношение с остальными моделями.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function commentable()
     {
         return $this->morphTo();
@@ -92,7 +164,7 @@ class CommentModel extends Model
      * @param $object
      * @return array
      */
-    public static function getTree($object)
+    public static function getTree($object): array
     {
         $tree = $object->comments()->where('is_active', 1)->get()->toTree();
 
