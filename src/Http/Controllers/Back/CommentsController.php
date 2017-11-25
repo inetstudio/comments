@@ -7,9 +7,9 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use InetStudio\Comments\Models\CommentModel;
-use InetStudio\AdminPanel\Traits\DatatablesTrait;
-use InetStudio\Comments\Http\Requests\Back\SaveCommentRequest;
 use InetStudio\Comments\Transformers\CommentTransformer;
+use InetStudio\Comments\Http\Requests\Back\SaveCommentRequest;
+use InetStudio\AdminPanel\Http\Controllers\Back\Traits\DatatablesTrait;
 
 /**
  * Контроллер для управления комментариями.
