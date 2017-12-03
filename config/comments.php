@@ -58,4 +58,9 @@ return [
         'name' => 'comments_notify'
     ],
 
+    'commentable' => [
+        'article' => '\InetStudio\Articles\Models\ArticleModel',
+        'ingredient' => '\InetStudio\Ingredients\Models\IngredientModel',
+    ],
+
 ];

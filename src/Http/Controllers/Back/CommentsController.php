@@ -7,6 +7,7 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use InetStudio\Comments\Models\CommentModel;
+use InetStudio\Comments\Events\UpdateCommentsEvent;
 use InetStudio\Comments\Transformers\CommentTransformer;
 use InetStudio\Comments\Http\Requests\Back\SaveCommentRequest;
 use InetStudio\AdminPanel\Http\Controllers\Back\Traits\DatatablesTrait;
@@ -155,7 +156,7 @@ class CommentsController extends Controller
             $item->save();
         }
 
-        \Event::fire('inetstudio.comments.cache.clear', md5($item->commentable_type.$item->commentable_id));
+        event(new UpdateCommentsEvent($item));
 
         Session::flash('success', 'Комментарий успешно '.$action);
 

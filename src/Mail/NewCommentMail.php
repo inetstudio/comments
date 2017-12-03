@@ -1,6 +1,6 @@
 <?php
 
-namespace InetStudio\Comments\Mails;
+namespace InetStudio\Comments\Mail;
 
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

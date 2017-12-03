@@ -4,7 +4,7 @@ namespace InetStudio\Comments\Notifications;
 
 use Illuminate\Notifications\Notification;
 use InetStudio\Comments\Models\CommentModel;
-use InetStudio\Comments\Mails\NewCommentMail;
+use InetStudio\Comments\Mail\NewCommentMail;
 
 class NewCommentNotification extends Notification
 {
