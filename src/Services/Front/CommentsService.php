@@ -39,7 +39,7 @@ class CommentsService
         $usersService = app()->make('UsersService');
 
         if (! isset($this->availableTypes[$type])) {
-            return;
+            return null;
         }
 
         if (! is_null($id) && $id > 0 && $item = $this->availableTypes[$type]::find($id)) {
@@ -56,7 +56,7 @@ class CommentsService
 
             return $comment;
         } else {
-            return;
+            return null;
         }
     }
 
