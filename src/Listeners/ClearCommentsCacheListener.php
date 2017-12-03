@@ -25,6 +25,6 @@ class ClearCommentsCacheListener
     {
         $object = $event->object;
 
-        Cache::tags(['comments'])->forget('CommentsService_getCommentsTree_'.md5($object->commentable_type.$object->commentable_id));
+        Cache::forget('CommentsService_getCommentsTree_'.md5($object->commentable_type.$object->commentable_id));
     }
 }

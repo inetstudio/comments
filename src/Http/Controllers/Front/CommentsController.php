@@ -50,7 +50,7 @@ class CommentsController extends Controller
         $page = ($request->filled('page')) ? $request->get('page') - 1 : 0;
         $limit = ($request->filled('limit')) ? $request->get('limit') : 3;
 
-        $comments = $commentsService->getCommentsTreeByTypeAndId($type, $id);
+        $comments = $commentsService->getCommentsTreeByTypeAndId($type, $id)->sortByDesc('datetime');
 
         return view('front.Comments.ajax.more', [
             'comments' => [

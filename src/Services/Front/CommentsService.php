@@ -70,7 +70,7 @@ class CommentsService
     {
         $cacheKey = 'CommentsService_getCommentsTree_'.md5(get_class($item).$item->id);
 
-        return \Cache::tags(['comments', 'materials'])->remember($cacheKey, 1440, function () use ($item) {
+        return \Cache::remember($cacheKey, 1440, function () use ($item) {
             return collect($item->commentsTree());
         });
     }
