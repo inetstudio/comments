@@ -2,9 +2,12 @@
 
 namespace InetStudio\Comments\Http\Controllers\Back;
 
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use InetStudio\Comments\Models\CommentModel;
 use InetStudio\Comments\Events\UpdateCommentsEvent;
@@ -27,7 +30,7 @@ class CommentsController extends Controller
      * @param DataTables $dataTable
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(DataTables $dataTable)
+    public function index(DataTables $dataTable): View
     {
         $table = $this->generateTable($dataTable, 'comments', 'index');
 
@@ -55,7 +58,7 @@ class CommentsController extends Controller
      * @param null $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function answer($id)
+    public function answer($id): View
     {
         if (! is_null($id) && $id > 0 && $item = CommentModel::find($id)) {
             $item->update([
@@ -76,7 +79,7 @@ class CommentsController extends Controller
      * @param SaveCommentRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(SaveCommentRequest $request)
+    public function store(SaveCommentRequest $request): RedirectResponse
     {
         return $this->save($request);
     }
@@ -87,7 +90,7 @@ class CommentsController extends Controller
      * @param null $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($id = null)
+    public function edit($id = null): View
     {
         if (! is_null($id) && $id > 0 && $item = CommentModel::find($id)) {
             $item->update([
@@ -109,7 +112,7 @@ class CommentsController extends Controller
      * @param null $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(SaveCommentRequest $request, $id = null)
+    public function update(SaveCommentRequest $request, $id = null): RedirectResponse
     {
         return $this->save($request, $id);
     }
@@ -121,7 +124,7 @@ class CommentsController extends Controller
      * @param null $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    private function save($request, $id = null)
+    private function save(SaveCommentRequest $request, $id = null): RedirectResponse
     {
         if (! is_null($id) && $id > 0 && $item = CommentModel::find($id)) {
             $action = 'отредактирован';
@@ -169,7 +172,7 @@ class CommentsController extends Controller
      * @param null $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id = null)
+    public function destroy($id = null): JsonResponse
     {
         return response()->json([
             'success' => $this->destroyComment($id),
@@ -182,7 +185,7 @@ class CommentsController extends Controller
      * @param null $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changeActivity($id = null)
+    public function changeActivity($id = null): JsonResponse
     {
         return response()->json([
             'success' => $this->activityComment($id),
@@ -195,7 +198,7 @@ class CommentsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function groupActivity(Request $request)
+    public function groupActivity(Request $request): JsonResponse
     {
         if ($request->filled('comments')) {
             foreach ($request->get('comments') as $commentId) {
@@ -214,7 +217,7 @@ class CommentsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function groupRead(Request $request)
+    public function groupRead(Request $request): JsonResponse
     {
         if ($request->filled('comments')) {
             foreach ($request->get('comments') as $commentId) {
@@ -233,7 +236,7 @@ class CommentsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function groupDestroy(Request $request)
+    public function groupDestroy(Request $request): JsonResponse
     {
         if ($request->filled('comments')) {
             foreach ($request->get('comments') as $commentId) {
@@ -246,14 +249,20 @@ class CommentsController extends Controller
         ]);
     }
 
-    private function activityComment($id)
+    /**
+     * Изменяем активность комментария.
+     *
+     * @param $id
+     * @return bool
+     */
+    private function activityComment($id): bool
     {
         if (! is_null($id) && $id > 0 && $item = CommentModel::find($id)) {
             $item->update([
                 'is_active' => ! $item->is_active,
             ]);
 
-            \Event::fire('inetstudio.comments.cache.clear', md5($item->commentable_type.$item->commentable_id));
+            event(new UpdateCommentsEvent($item));
 
             return true;
         } else {
@@ -261,7 +270,13 @@ class CommentsController extends Controller
         }
     }
 
-    private function readComment($id)
+    /**
+     * Меняем признак просмотра.
+     *
+     * @param $id
+     * @return bool
+     */
+    private function readComment($id): bool
     {
         if (! is_null($id) && $id > 0 && $item = CommentModel::find($id)) {
             $item->update([
@@ -280,7 +295,7 @@ class CommentsController extends Controller
      * @param $id
      * @return bool
      */
-    private function destroyComment($id)
+    private function destroyComment($id): bool
     {
         if (! is_null($id) && $id > 0 && $item = CommentModel::find($id)) {
             $item->delete();
