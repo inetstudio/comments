@@ -17,14 +17,14 @@ class CommentTransformer extends TransformerAbstract
     public function transform(CommentModel $comment): array
     {
         return [
-            'checkbox' => view('admin.module.comments::partials.datatables.checkbox', [
+            'checkbox' => view('admin.module.comments::back.partials.datatables.checkbox', [
                 'id' => $comment->id,
             ])->render(),
             'id' => (int) $comment->id,
-            'read' => view('admin.module.comments::partials.datatables.read', [
+            'read' => view('admin.module.comments::back.partials.datatables.read', [
                 'is_read' => $comment->is_read,
             ])->render(),
-            'active' => view('admin.module.comments::partials.datatables.active', [
+            'active' => view('admin.module.comments::back.partials.datatables.active', [
                 'id' => $comment->id,
                 'is_active' => $comment->is_active,
             ])->render(),
@@ -32,7 +32,7 @@ class CommentTransformer extends TransformerAbstract
             'email' => $comment->email,
             'message' => Str::limit($comment->message, 150, '...'),
             'created_at' => (string) $comment->created_at,
-            'actions' => view('admin.module.comments::partials.datatables.actions', [
+            'actions' => view('admin.module.comments::back.partials.datatables.actions', [
                 'id' => $comment->id,
             ])->render(),
         ];

@@ -1,7 +1,7 @@
 <?php
 
 Route::group(['namespace' => 'InetStudio\Comments\Http\Controllers\Back'], function () {
-    Route::group(['prefix' => 'back'], function () {
+    Route::group(['middleware' => 'web', 'prefix' => 'back'], function () {
         Route::group(['middleware' => 'back.auth'], function () {
             Route::post('comments/activity/{id}', 'CommentsController@changeActivity')->name('back.comments.activity');
             Route::any('comments/data', 'CommentsController@data')->name('back.comments.data');
@@ -17,6 +17,8 @@ Route::group(['namespace' => 'InetStudio\Comments\Http\Controllers\Back'], funct
 });
 
 Route::group(['namespace' => 'InetStudio\Comments\Http\Controllers\Front'], function () {
-    Route::post('comments/more/{type}/{id}', 'CommentsController@getComments')->name('front.comments.get');
-    Route::post('comments/{type}/{id}', 'CommentsController@sendComment')->name('front.comments.send');
+    Route::group(['middleware' => 'web'], function () {
+        Route::post('comments/more/{type}/{id}', 'CommentsController@getComments')->name('front.comments.get');
+        Route::post('comments/{type}/{id}', 'CommentsController@sendComment')->name('front.comments.send');
+    });
 });

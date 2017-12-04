@@ -34,7 +34,7 @@ class CommentsController extends Controller
     {
         $table = $this->generateTable($dataTable, 'comments', 'index');
 
-        return view('admin.module.comments::pages.index', compact('table'));
+        return view('admin.module.comments::back.pages.index', compact('table'));
     }
 
     /**
@@ -65,7 +65,7 @@ class CommentsController extends Controller
                 'is_read' => true,
             ]);
 
-            return view('admin.module.comments::pages.answer', [
+            return view('admin.module.comments::back.pages.answer', [
                 'item' => $item,
             ]);
         } else {
@@ -97,7 +97,7 @@ class CommentsController extends Controller
                 'is_read' => true,
             ]);
             
-            return view('admin.module.comments::pages.form', [
+            return view('admin.module.comments::back.pages.form', [
                 'item' => $item,
             ]);
         } else {

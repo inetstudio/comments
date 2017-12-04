@@ -139,7 +139,7 @@ class CommentsServiceProvider extends ServiceProvider
      */
     public function registerViewComposers(): void
     {
-        view()->composer('admin.module.comments::includes.navigation', function($view) {
+        view()->composer('admin.module.comments::back.includes.navigation', function($view) {
             $view->with('unreadBadge', CommentModel::unread()->count());
         });
     }

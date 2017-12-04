@@ -9,7 +9,7 @@
 @section('content')
 
     @push('breadcrumbs')
-        @include('admin.module.comments::partials.breadcrumbs')
+        @include('admin.module.comments::back.partials.breadcrumbs')
         <li>
             <a href="{{ route('back.comments.index') }}">Комментарии</a>
         </li>

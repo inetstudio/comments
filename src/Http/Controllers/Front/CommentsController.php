@@ -52,7 +52,7 @@ class CommentsController extends Controller
 
         $comments = $commentsService->getCommentsTreeByTypeAndId($type, $id)->sortByDesc('datetime');
 
-        return view('front.Comments.ajax.more', [
+        return view('admin.module.comments::front.ajax.more', [
             'comments' => [
                 'stop' => (($page+1)*$limit >= $comments->count()),
                 'items' => $comments->slice($page*$limit, $limit),
