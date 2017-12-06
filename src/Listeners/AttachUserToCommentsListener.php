@@ -3,7 +3,6 @@
 namespace InetStudio\Comments\Listeners;
 
 use InetStudio\Comments\Models\CommentModel;
-use InetStudio\AdminPanel\Events\Auth\ActivatedEvent;
 
 class AttachUserToCommentsListener
 {
@@ -18,10 +17,10 @@ class AttachUserToCommentsListener
     /**
      * Handle the event.
      *
-     * @param ActivatedEvent $event
+     * @param $event
      * @return void
      */
-    public function handle(ActivatedEvent $event): void
+    public function handle($event): void
     {
         $user = $event->user;
 

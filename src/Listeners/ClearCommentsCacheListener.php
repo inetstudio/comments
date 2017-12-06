@@ -3,7 +3,6 @@
 namespace InetStudio\Comments\Listeners;
 
 use Illuminate\Support\Facades\Cache;
-use InetStudio\Comments\Events\UpdateCommentsEvent;
 
 class ClearCommentsCacheListener
 {
@@ -18,10 +17,10 @@ class ClearCommentsCacheListener
     /**
      * Handle the event.
      *
-     * @param UpdateCommentsEvent $event
+     * @param $event
      * @return void
      */
-    public function handle(UpdateCommentsEvent $event)
+    public function handle($event)
     {
         $object = $event->object;
 
