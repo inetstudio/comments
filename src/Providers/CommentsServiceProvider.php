@@ -10,6 +10,7 @@ use InetStudio\Comments\Events\UpdateCommentsEvent;
 use InetStudio\AdminPanel\Events\Auth\ActivatedEvent;
 use InetStudio\Comments\Console\Commands\SetupCommand;
 use InetStudio\Comments\Services\Front\CommentsService;
+use InetStudio\AdminPanel\Events\Auth\SocialRegisteredEvent;
 use InetStudio\Comments\Listeners\ClearCommentsCacheListener;
 use InetStudio\Comments\Listeners\AttachUserToCommentsListener;
 
@@ -119,6 +120,7 @@ class CommentsServiceProvider extends ServiceProvider
     protected function registerEvents(): void
     {
         Event::listen(ActivatedEvent::class, AttachUserToCommentsListener::class);
+        Event::listen(SocialRegisteredEvent::class, AttachUserToCommentsListener::class);
         Event::listen(UpdateCommentsEvent::class, ClearCommentsCacheListener::class);
     }
 
