@@ -56,13 +56,13 @@
     </div>
 @endsection
 
-@pushonce('scripts:datatables')
-    <!-- DATATABLES -->
+@pushonce('scripts:switchery')
+    <!-- SWITCHERY -->
     <script src="{!! asset('admin/js/plugins/switchery/switchery.js') !!}"></script>
 @endpushonce
 
-@pushonce('scripts:switchery')
-    <!-- SWITCHERY -->
+@pushonce('scripts:datatables')
+    <!-- DATATABLES -->
     <script src="{!! asset('admin/js/plugins/datatables/datatables.min.js') !!}"></script>
 @endpushonce
 
