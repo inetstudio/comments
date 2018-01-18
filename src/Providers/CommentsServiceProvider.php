@@ -2,6 +2,7 @@
 
 namespace InetStudio\Comments\Providers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use InetStudio\Comments\Models\CommentModel;
@@ -141,8 +142,14 @@ class CommentsServiceProvider extends ServiceProvider
      */
     public function registerViewComposers(): void
     {
-        view()->composer('admin.module.comments::back.includes.*', function($view) {
+        view()->composer('admin.module.comments::back.includes.*', function ($view) {
             $view->with('unreadBadge', CommentModel::unread()->count());
+        });
+
+        view()->composer('admin.module.comments::back.partials.analytics.users.statistic', function ($view) {
+            $comments = CommentModel::select(['is_active', DB::raw('count(*) as total')])->groupBy('is_active')->get();
+
+            $view->with('comments', $comments);
         });
     }
 
