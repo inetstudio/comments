@@ -27,12 +27,11 @@ class CommentsController extends Controller
     /**
      * Список комментариев.
      *
-     * @param DataTables $dataTable
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(DataTables $dataTable): View
+    public function index(): View
     {
-        $table = $this->generateTable($dataTable, 'comments', 'index');
+        $table = $this->generateTable('comments', 'index');
 
         return view('admin.module.comments::back.pages.index', compact('table'));
     }
