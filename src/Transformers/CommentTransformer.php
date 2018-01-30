@@ -12,7 +12,10 @@ class CommentTransformer extends TransformerAbstract
      * Подготовка данных для отображения в таблице.
      *
      * @param CommentModel $comment
+     *
      * @return array
+     *
+     * @throws \Throwable
      */
     public function transform(CommentModel $comment): array
     {
@@ -32,6 +35,9 @@ class CommentTransformer extends TransformerAbstract
             'email' => $comment->email,
             'message' => Str::limit($comment->message, 150, '...'),
             'created_at' => (string) $comment->created_at,
+            'material' => view('admin.module.comments::back.partials.datatables.material', [
+                'item' => $comment->commentable,
+            ])->render(),
             'actions' => view('admin.module.comments::back.partials.datatables.actions', [
                 'id' => $comment->id,
             ])->render(),

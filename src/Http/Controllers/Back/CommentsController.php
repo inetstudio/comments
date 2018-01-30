@@ -28,6 +28,8 @@ class CommentsController extends Controller
      * Список комментариев.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *
+     * @throws \Exception
      */
     public function index(): View
     {
@@ -40,6 +42,8 @@ class CommentsController extends Controller
      * Datatables serverside.
      *
      * @return mixed
+     *
+     * @throws \Exception
      */
     public function data()
     {

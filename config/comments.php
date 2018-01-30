@@ -36,6 +36,7 @@ return [
                 ['data' => 'email', 'name' => 'email', 'title' => 'Email'],
                 ['data' => 'message', 'name' => 'message', 'title' => 'Сообщение'],
                 ['data' => 'created_at', 'name' => 'created_at', 'title' => 'Дата создания'],
+                ['data' => 'material', 'name' => 'material', 'title' => 'Материал', 'orderable' => false, 'searchable' => false],
                 ['data' => 'actions', 'name' => 'actions', 'title' => 'Действия', 'orderable' => false, 'searchable' => false],
             ],
         ],
