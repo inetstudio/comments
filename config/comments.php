@@ -25,6 +25,7 @@ return [
                     'url' => '/admin/js/plugins/datatables/locales/russian.json',
                 ],
             ],
+            'order' => [7, 'desc'],
         ],
         'columns' => [
             'index' => [

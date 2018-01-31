@@ -263,6 +263,7 @@ class CommentsController extends Controller
         if (! is_null($id) && $id > 0 && $item = CommentModel::find($id)) {
             $item->update([
                 'is_active' => ! $item->is_active,
+                'is_read' => 1,
             ]);
 
             event(new UpdateCommentsEvent($item));
