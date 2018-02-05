@@ -156,7 +156,7 @@ class CommentsController extends Controller
             $item->is_active = strip_tags($request->get('is_active'));
         }
 
-        if ($parentItem) {
+        if (isset($parentItem)) {
             $item->appendToNode($parentItem)->save();
         } else {
             $item->save();
