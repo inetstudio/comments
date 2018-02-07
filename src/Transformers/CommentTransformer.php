@@ -1,6 +1,6 @@
 <?php
 
-namespace Inetstudio\Comments\Transformers;
+namespace InetStudio\Comments\Transformers;
 
 use Illuminate\Support\Str;
 use League\Fractal\TransformerAbstract;
