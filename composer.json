@@ -10,9 +10,9 @@
       }
     ],
     "require": {
-      "arcanedev/no-captcha": "^5.0",
+      "arcanedev/no-captcha": "^6.0",
       "guzzlehttp/guzzle": "^6.3",
-      "inetstudio/admin-panel": "1.5.*",
+      "inetstudio/admin-panel": "1.6.*",
       "kalnoy/nestedset": "^4.3"
     },
     "autoload": {
