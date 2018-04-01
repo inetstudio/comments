@@ -27,7 +27,7 @@ class NewCommentMail extends Mailable
      *
      * @return $this
      */
-    public function build(): NewCommentMail
+    public function build(): self
     {
         $subject = config('app.name').' | '.((config('comments.mails.subject')) ? config('comments.mails.subject') : 'Новый комментарий');
         $headers = (config('comments.mails.headers')) ? config('comments.mails.headers') : [];

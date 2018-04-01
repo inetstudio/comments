@@ -54,8 +54,8 @@ class CommentsController extends Controller
 
         return view('admin.module.comments::front.ajax.more', [
             'comments' => [
-                'stop' => (($page+1)*$limit >= $comments->count()),
-                'items' => $comments->slice($page*$limit, $limit),
+                'stop' => (($page + 1) * $limit >= $comments->count()),
+                'items' => $comments->slice($page * $limit, $limit),
             ],
         ])->render();
     }

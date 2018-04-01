@@ -3,8 +3,8 @@
 namespace InetStudio\Comments\Notifications;
 
 use Illuminate\Notifications\Notification;
-use InetStudio\Comments\Models\CommentModel;
 use InetStudio\Comments\Mail\NewCommentMail;
+use InetStudio\Comments\Models\CommentModel;
 
 class NewCommentNotification extends Notification
 {
@@ -41,7 +41,7 @@ class NewCommentNotification extends Notification
      */
     public function toMail($notifiable): NewCommentMail
     {
-        return (new NewCommentMail($this->comment));
+        return new NewCommentMail($this->comment);
     }
 
     /**
