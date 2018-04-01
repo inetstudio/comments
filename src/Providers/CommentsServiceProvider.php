@@ -66,10 +66,6 @@ class CommentsServiceProvider extends ServiceProvider
     protected function registerPublishes(): void
     {
         $this->publishes([
-            __DIR__.'/../../public' => public_path(),
-        ], 'public');
-
-        $this->publishes([
             __DIR__.'/../../config/comments.php' => config_path('comments.php'),
         ], 'config');
 
