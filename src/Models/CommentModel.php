@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * InetStudio\Comments\Models\CommentModel
+ * InetStudio\Comments\Models\CommentModel.
  *
  * @property int $id
  * @property int $is_read
@@ -149,7 +149,7 @@ class CommentModel extends Model
     }
 
     /**
-     * Обратное отношение с моделью пользователя
+     * Обратное отношение с моделью пользователя.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

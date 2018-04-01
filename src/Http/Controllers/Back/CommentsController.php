@@ -99,7 +99,7 @@ class CommentsController extends Controller
             $item->update([
                 'is_read' => true,
             ]);
-            
+
             return view('admin.module.comments::back.pages.form', [
                 'item' => $item,
             ]);
