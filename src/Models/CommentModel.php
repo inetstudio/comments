@@ -2,12 +2,12 @@
 
 namespace InetStudio\Comments\Models;
 
-use App\User;
 use Laravel\Scout\Searchable;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use InetStudio\ACL\Users\Models\Traits\HasUser;
 
 /**
  * InetStudio\Comments\Models\CommentModel.
@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $commentable
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \InetStudio\Comments\Models\CommentModel|null $parent
- * @property-read \App\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel active()
  * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel d()
  * @method static bool|null forceDelete()
@@ -60,6 +59,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class CommentModel extends Model
 {
+    use HasUser;
     use NodeTrait;
     use Notifiable;
     use Searchable;
@@ -146,16 +146,6 @@ class CommentModel extends Model
     public function commentable()
     {
         return $this->morphTo();
-    }
-
-    /**
-     * Обратное отношение с моделью пользователя.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
