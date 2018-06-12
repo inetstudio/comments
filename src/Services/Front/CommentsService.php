@@ -36,7 +36,7 @@ class CommentsService
                                 string $type,
                                 int $id): ?CommentModel
     {
-        $usersService = app()->make('UsersService');
+        $usersService = app()->make('InetStudio\ACL\Users\Contracts\Services\Front\UsersServiceContract');
 
         if (! isset($this->availableTypes[$type])) {
             return null;
