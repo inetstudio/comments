@@ -8,13 +8,14 @@ use Illuminate\Support\ServiceProvider;
 use InetStudio\Comments\Models\CommentModel;
 use InetStudio\Comments\Observers\CommentObserver;
 use InetStudio\Comments\Events\UpdateCommentsEvent;
-use InetStudio\AdminPanel\Events\Auth\ActivatedEvent;
 use InetStudio\Comments\Console\Commands\SetupCommand;
 use InetStudio\Comments\Services\Front\CommentsService;
-use InetStudio\AdminPanel\Events\Auth\SocialRegisteredEvent;
 use InetStudio\Comments\Listeners\ClearCommentsCacheListener;
 use InetStudio\Comments\Listeners\AttachUserToCommentsListener;
 
+/**
+ * Class CommentsServiceProvider.
+ */
 class CommentsServiceProvider extends ServiceProvider
 {
     /**
@@ -116,8 +117,8 @@ class CommentsServiceProvider extends ServiceProvider
      */
     protected function registerEvents(): void
     {
-        Event::listen(ActivatedEvent::class, AttachUserToCommentsListener::class);
-        Event::listen(SocialRegisteredEvent::class, AttachUserToCommentsListener::class);
+        Event::listen(app()->make('InetStudio\ACL\Activations\Contracts\Events\Front\ActivatedEventContract'), AttachUserToCommentsListener::class);
+        Event::listen(app()->make('InetStudio\ACL\Users\Contracts\Events\Front\SocialRegisteredEventContract'), AttachUserToCommentsListener::class);
         Event::listen(UpdateCommentsEvent::class, ClearCommentsCacheListener::class);
     }
 
