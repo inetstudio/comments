@@ -117,8 +117,8 @@ class CommentsServiceProvider extends ServiceProvider
      */
     protected function registerEvents(): void
     {
-        Event::listen(app()->make('InetStudio\ACL\Activations\Contracts\Events\Front\ActivatedEventContract'), AttachUserToCommentsListener::class);
-        Event::listen(app()->make('InetStudio\ACL\Users\Contracts\Events\Front\SocialRegisteredEventContract'), AttachUserToCommentsListener::class);
+        Event::listen('InetStudio\ACL\Activations\Contracts\Events\Front\ActivatedEventContract', AttachUserToCommentsListener::class);
+        Event::listen('InetStudio\ACL\Users\Contracts\Events\Front\SocialRegisteredEventContract', AttachUserToCommentsListener::class);
         Event::listen(UpdateCommentsEvent::class, ClearCommentsCacheListener::class);
     }
 
