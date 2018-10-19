@@ -1,6 +1,6 @@
 {
   "name": "inetstudio-comments",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "dependencies": {
     "switchery": "https://github.com/thomask/switchery"
   }
