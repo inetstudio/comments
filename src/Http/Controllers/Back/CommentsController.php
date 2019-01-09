@@ -10,8 +10,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use InetStudio\Comments\Models\CommentModel;
-use InetStudio\Comments\Events\UpdateCommentsEvent;
-use InetStudio\Comments\Transformers\CommentTransformer;
+use InetStudio\Comments\Events\Back\ModifyCommentEvent;
+use InetStudio\Comments\Transformers\Back\CommentTransformer;
 use InetStudio\Comments\Http\Requests\Back\SaveCommentRequest;
 use InetStudio\AdminPanel\Http\Controllers\Back\Traits\DatatablesTrait;
 
@@ -162,7 +162,7 @@ class CommentsController extends Controller
             $item->save();
         }
 
-        event(new UpdateCommentsEvent($item));
+        event(new ModifyCommentEvent($item));
 
         Session::flash('success', 'Комментарий успешно '.$action);
 
@@ -266,7 +266,7 @@ class CommentsController extends Controller
                 'is_read' => 1,
             ]);
 
-            event(new UpdateCommentsEvent($item));
+            event(new ModifyCommentEvent($item));
 
             return true;
         } else {

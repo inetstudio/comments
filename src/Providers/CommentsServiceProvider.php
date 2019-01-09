@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use InetStudio\Comments\Models\CommentModel;
 use InetStudio\Comments\Observers\CommentObserver;
-use InetStudio\Comments\Events\UpdateCommentsEvent;
+use InetStudio\Comments\Events\Back\ModifyCommentEvent;
 use InetStudio\Comments\Console\Commands\SetupCommand;
 use InetStudio\Comments\Services\Front\CommentsService;
 use InetStudio\Comments\Listeners\ClearCommentsCacheListener;
@@ -119,7 +119,7 @@ class CommentsServiceProvider extends ServiceProvider
     {
         Event::listen('InetStudio\ACL\Activations\Contracts\Events\Front\ActivatedEventContract', AttachUserToCommentsListener::class);
         Event::listen('InetStudio\ACL\Users\Contracts\Events\Front\SocialRegisteredEventContract', AttachUserToCommentsListener::class);
-        Event::listen(UpdateCommentsEvent::class, ClearCommentsCacheListener::class);
+        Event::listen(ModifyCommentEvent::class, ClearCommentsCacheListener::class);
     }
 
     /**
