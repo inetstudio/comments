@@ -16,6 +16,10 @@ return [
         ],
         'table' => [
             'index' => [
+                'order' => [
+                    7,
+                    'desc'
+                ],
                 'paging' => true,
                 'pagingType' => 'full_numbers',
                 'searching' => true,

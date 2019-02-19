@@ -4,11 +4,11 @@ namespace InetStudio\Comments\Providers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use InetStudio\Comments\Models\CommentModel;
 use InetStudio\Comments\Observers\CommentObserver;
 use InetStudio\Comments\Events\Back\ModifyCommentEvent;
-use InetStudio\Comments\Console\Commands\SetupCommand;
 use InetStudio\Comments\Services\Front\CommentsService;
 use InetStudio\Comments\Listeners\ClearCommentsCacheListener;
 use InetStudio\Comments\Listeners\AttachUserToCommentsListener;
@@ -54,7 +54,7 @@ class CommentsServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                SetupCommand::class,
+                'InetStudio\Comments\Console\Commands\SetupCommand',
             ]);
         }
     }
@@ -71,7 +71,7 @@ class CommentsServiceProvider extends ServiceProvider
         ], 'config');
 
         if ($this->app->runningInConsole()) {
-            if (! class_exists('CreateCommentsTables')) {
+            if (! Schema::hasTable('comments')) {
                 $timestamp = date('Y_m_d_His', time());
                 $this->publishes([
                     __DIR__.'/../../database/migrations/create_comments_tables.php.stub' => database_path('migrations/'.$timestamp.'_create_comments_tables.php'),

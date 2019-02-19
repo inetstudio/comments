@@ -4,7 +4,7 @@ namespace InetStudio\Comments\Transformers\Back;
 
 use Illuminate\Support\Str;
 use League\Fractal\TransformerAbstract;
-use InetStudio\Comments\Models\CommentModel;
+use InetStudio\Comments\Contracts\Models\CommentModelContract;
 use InetStudio\Comments\Contracts\Transformers\Back\CommentTransformerContract;
 
 /**
@@ -15,13 +15,13 @@ class CommentTransformer extends TransformerAbstract implements CommentTransform
     /**
      * Подготовка данных для отображения в таблице.
      *
-     * @param CommentModel $comment
+     * @param CommentModelContract $comment
      *
      * @return array
      *
      * @throws \Throwable
      */
-    public function transform(CommentModel $comment): array
+    public function transform(CommentModelContract $comment): array
     {
         return [
             'checkbox' => view('admin.module.comments::back.partials.datatables.checkbox', [

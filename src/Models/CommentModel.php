@@ -2,12 +2,14 @@
 
 namespace InetStudio\Comments\Models;
 
+use League\Fractal\Manager;
 use Laravel\Scout\Searchable;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use InetStudio\ACL\Users\Models\Traits\HasUser;
+use InetStudio\Comments\Contracts\Models\CommentModelContract;
 
 /**
  * InetStudio\Comments\Models\CommentModel.
@@ -57,7 +59,7 @@ use InetStudio\ACL\Users\Models\Traits\HasUser;
  * @method static \Illuminate\Database\Query\Builder|\InetStudio\Comments\Models\CommentModel withoutTrashed()
  * @mixin \Eloquent
  */
-class CommentModel extends Model
+class CommentModel extends Model implements CommentModelContract
 {
     use HasUser;
     use NodeTrait;
@@ -152,29 +154,23 @@ class CommentModel extends Model
      * Получаем дерево комментариев.
      *
      * @param $object
+     *
      * @return array
      */
     public static function getTree($object): array
     {
         $tree = $object->comments()->where('is_active', 1)->get()->toTree();
 
-        $data = [];
+        $resource = (app()->makeWith('InetStudio\Comments\Contracts\Transformers\Front\CommentTransformerContract'))
+            ->transformCollection($tree);
 
-        $traverse = function ($comments) use (&$traverse, $data) {
-            foreach ($comments as $comment) {
-                $data[$comment->id]['id'] = $comment->id;
-                $data[$comment->id]['user'] = [
-                    'object' => $comment->user,
-                    'name' => $comment->name,
-                ];
-                $data[$comment->id]['datetime'] = $comment->created_at;
-                $data[$comment->id]['message'] = $comment->message;
-                $data[$comment->id]['items'] = $traverse($comment->children);
-            }
+        $manager = new Manager();
 
-            return $data;
-        };
+        $serializer = app()->make('InetStudio\AdminPanel\Contracts\Serializers\SimpleDataArraySerializerContract');
+        $manager->setSerializer($serializer);
 
-        return $traverse($tree);
+        $transformation = $manager->createData($resource)->toArray();
+
+        return $transformation;
     }
 }
