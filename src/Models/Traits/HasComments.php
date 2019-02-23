@@ -2,7 +2,7 @@
 
 namespace InetStudio\Comments\Models\Traits;
 
-use InetStudio\Comments\Contracts\Services\Front\CommentsServiceContract;
+use Illuminate\Support\Collection;
 
 /**
  * Trait HasComments.
@@ -34,14 +34,10 @@ trait HasComments
     /**
      * Возвращаем комментарии в виде иерархии.
      *
-     * @param CommentsServiceContract $commentsServiceContract
-     *
-     * @return array
+     * @return Collection
      */
-    public function commentsTree(CommentsServiceContract $commentsServiceContract): array
+    public function commentsTree(): Collection
     {
-        $tree = $this->comments()->where('is_active', 1)->get()->toTree();
-
-        return $commentsServiceContract->getTree($tree);
+        return $this->comments()->get()->toTree();
     }
 }

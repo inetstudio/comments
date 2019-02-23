@@ -59,7 +59,7 @@ class CommentsController extends Controller implements CommentsControllerContrac
 
         $comments = $commentsService->getCommentsTreeByTypeAndId($type, $id)->sortByDesc('datetime');
 
-        return app()->makeWith(SendCommentResponseContract::class, [
+        return app()->makeWith(GetCommentsResponseContract::class, [
             'data' => [
                 'comments' => [
                     'stop' => (($page + 1) * $limit >= $comments->count()),

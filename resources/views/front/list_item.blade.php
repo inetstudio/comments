@@ -1,5 +1,5 @@
 <li>
-    @if (isset($commentItem['user']['object']) && $commentItem['user']['object']->hasRole('admin'))
+    @if (in_array('admin', $commentItem['user']['roles']))
         <span class="article-comments_list-name editor">Редакция <i class="icon-logo"></i></span>
     @else
         <span class="article-comments_list-name">{{ $commentItem['user']['name'] }}</span>

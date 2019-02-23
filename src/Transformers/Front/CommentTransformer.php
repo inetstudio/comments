@@ -30,10 +30,12 @@ class CommentTransformer extends TransformerAbstract implements CommentTransform
      */
     public function transform(CommentModelContract $item): array
     {
+        $user = $item->user;
+
         return [
             'id' => $item->id,
             'user' => [
-                'object' => $item->user,
+                'roles' => ($user) ? $user->roles->pluck('name')->toArray() : [],
                 'name' => $item->name,
             ],
             'datetime' => (string) $item->created_at,

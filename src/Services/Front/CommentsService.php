@@ -106,7 +106,7 @@ class CommentsService extends BaseService implements CommentsServiceContract
      *
      * @return array
      */
-    protected function getTree($tree): array
+    public function getTree($tree): array
     {
         $resource = (app()->makeWith('InetStudio\Comments\Contracts\Transformers\Front\CommentTransformerContract'))
             ->transformCollection($tree);
