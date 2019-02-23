@@ -2,7 +2,6 @@
 
 namespace InetStudio\Comments\Models;
 
-use League\Fractal\Manager;
 use Laravel\Scout\Searchable;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -10,54 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use InetStudio\ACL\Users\Models\Traits\HasUser;
 use InetStudio\Comments\Contracts\Models\CommentModelContract;
+use InetStudio\AdminPanel\Base\Models\Traits\Scopes\BuildQueryScopeTrait;
 
 /**
- * InetStudio\Comments\Models\CommentModel.
- *
- * @property int $id
- * @property int $is_read
- * @property int $is_active
- * @property int $commentable_id
- * @property string $commentable_type
- * @property int $_lft
- * @property int $_rgt
- * @property int|null $parent_id
- * @property string $user_id
- * @property string $name
- * @property string $email
- * @property string|null $message
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property \Carbon\Carbon|null $deleted_at
- * @property-read \Kalnoy\Nestedset\Collection|\InetStudio\Comments\Models\CommentModel[] $children
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $commentable
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read \InetStudio\Comments\Models\CommentModel|null $parent
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel active()
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel d()
- * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel inactive()
- * @method static \Illuminate\Database\Query\Builder|\InetStudio\Comments\Models\CommentModel onlyTrashed()
- * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel unread()
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereCommentableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereCommentableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereIsRead($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereLft($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereRgt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\InetStudio\Comments\Models\CommentModel whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\InetStudio\Comments\Models\CommentModel withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\InetStudio\Comments\Models\CommentModel withoutTrashed()
- * @mixin \Eloquent
+ * Class CommentModel.
  */
 class CommentModel extends Model implements CommentModelContract
 {
@@ -66,6 +21,21 @@ class CommentModel extends Model implements CommentModelContract
     use Notifiable;
     use Searchable;
     use SoftDeletes;
+    use BuildQueryScopeTrait;
+
+    /**
+     * Загрузка модели.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::$buildQueryScopeDefaults['columns'] = [
+            'id', 'is_read', 'is_active', 'user_id', 'name', 'email', 'message', 'commentable_id', 'commentable_type',
+        ];
+    }
 
     /**
      * Связанная с моделью таблица.
@@ -108,9 +78,90 @@ class CommentModel extends Model implements CommentModelContract
     }
 
     /**
+     * Сеттер атрибута is_read.
+     *
+     * @param $value
+     */
+    public function setIsReadAttribute($value)
+    {
+        $this->attributes['is_read'] = (bool) trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута is_active.
+     *
+     * @param $value
+     */
+    public function setIsActiveAttribute($value)
+    {
+        $this->attributes['is_active'] = (bool) trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута user_id.
+     *
+     * @param $value
+     */
+    public function setUserIdAttribute($value)
+    {
+        $this->attributes['user_id'] = (int) trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута name.
+     *
+     * @param $value
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута email.
+     *
+     * @param $value
+     */
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута message.
+     *
+     * @param $value
+     */
+    public function setMessageAttribute($value)
+    {
+        $this->attributes['message'] = trim(str_replace("&nbsp;", ' ', strip_tags((isset($value['text'])) ? $value['text'] : (! is_array($value) ? $value : ''))));
+    }
+
+    /**
+     * Сеттер атрибута commentable_type.
+     *
+     * @param $value
+     */
+    public function setCommentableTypeAttribute($value)
+    {
+        $this->attributes['commentable_type'] = trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута commentable_id.
+     *
+     * @param $value
+     */
+    public function setCommentableIdAttribute($value)
+    {
+        $this->attributes['commentable_id'] = (int) trim(strip_tags($value));
+    }
+
+    /**
      * Заготовка запроса "Непрочитанные комментарии".
      *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeUnread($query)
@@ -122,6 +173,7 @@ class CommentModel extends Model implements CommentModelContract
      * Заготовка запроса "Активные комментарии".
      *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeActive($query)
@@ -133,6 +185,7 @@ class CommentModel extends Model implements CommentModelContract
      * Заготовка запроса "Неактивные комментарии".
      *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeInactive($query)
@@ -148,29 +201,5 @@ class CommentModel extends Model implements CommentModelContract
     public function commentable()
     {
         return $this->morphTo();
-    }
-
-    /**
-     * Получаем дерево комментариев.
-     *
-     * @param $object
-     *
-     * @return array
-     */
-    public static function getTree($object): array
-    {
-        $tree = $object->comments()->where('is_active', 1)->get()->toTree();
-
-        $resource = (app()->makeWith('InetStudio\Comments\Contracts\Transformers\Front\CommentTransformerContract'))
-            ->transformCollection($tree);
-
-        $manager = new Manager();
-
-        $serializer = app()->make('InetStudio\AdminPanel\Contracts\Serializers\SimpleDataArraySerializerContract');
-        $manager->setSerializer($serializer);
-
-        $transformation = $manager->createData($resource)->toArray();
-
-        return $transformation;
     }
 }

@@ -3,60 +3,69 @@
 namespace InetStudio\Comments\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use InetStudio\Comments\Http\Requests\Front\SendCommentRequest;
+use InetStudio\Comments\Contracts\Services\Front\CommentsServiceContract;
+use InetStudio\Comments\Contracts\Http\Responses\Front\GetCommentsResponseContract;
+use InetStudio\Comments\Contracts\Http\Responses\Front\SendCommentResponseContract;
+use InetStudio\Comments\Contracts\Http\Controllers\Front\CommentsControllerContract;
 
-class CommentsController extends Controller
+/**
+ * Class CommentsController.
+ */
+class CommentsController extends Controller implements CommentsControllerContract
 {
     /**
      * Отправка комментария.
      *
+     * @param CommentsServiceContract $commentsService
      * @param SendCommentRequest $request
      * @param string $type
      * @param string $id
-     * @return JsonResponse
+     *
+     * @return SendCommentResponseContract
      */
-    public function sendComment(SendCommentRequest $request,
+    public function sendComment(CommentsServiceContract $commentsService,
+                                SendCommentRequest $request,
                                 string $type,
-                                string $id): JsonResponse
+                                string $id): SendCommentResponseContract
     {
-        $commentsService = app()->make('CommentsService');
+        $data = $request->only($commentsService->model->getFillable());
 
-        $comment = $commentsService->saveComment($request, $type, $id);
+        $comment = $commentsService->saveComment($data, $type, $id);
 
         $result = ($comment && isset($comment->id));
 
-        return response()->json([
-            'success' => $result,
-            'message' => ($result) ? trans('comments::messages.send_success') : trans('comments::messages.send_fail'),
-        ]);
+        return app()->makeWith(SendCommentResponseContract::class, compact('result'));
     }
 
     /**
      * Получаем комментарии к материалу.
      *
+     * @param CommentsServiceContract $commentsService
      * @param Request $request
      * @param string $type
      * @param string $id
-     * @return string
+     *
+     * @return GetCommentsResponseContract
      */
-    public function getComments(Request $request,
+    public function getComments(CommentsServiceContract $commentsService,
+                                Request $request,
                                 string $type,
-                                string $id): string
+                                string $id): GetCommentsResponseContract
     {
-        $commentsService = app()->make('CommentsService');
-
         $page = ($request->filled('page')) ? $request->get('page') - 1 : 0;
         $limit = ($request->filled('limit')) ? $request->get('limit') : 3;
 
         $comments = $commentsService->getCommentsTreeByTypeAndId($type, $id)->sortByDesc('datetime');
 
-        return view('admin.module.comments::front.ajax.more', [
-            'comments' => [
-                'stop' => (($page + 1) * $limit >= $comments->count()),
-                'items' => $comments->slice($page * $limit, $limit),
-            ],
-        ])->render();
+        return app()->makeWith(SendCommentResponseContract::class, [
+            'data' => [
+                'comments' => [
+                    'stop' => (($page + 1) * $limit >= $comments->count()),
+                    'items' => $comments->slice($page * $limit, $limit),
+                ],
+            ]
+        ]);
     }
 }

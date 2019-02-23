@@ -4,8 +4,12 @@ namespace InetStudio\Comments\Http\Requests\Back;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use InetStudio\Comments\Contracts\Http\Requests\Back\SaveCommentRequestContract;
 
-class SaveCommentRequest extends FormRequest
+/**
+ * Class SaveCommentRequest.
+ */
+class SaveCommentRequest extends FormRequest implements SaveCommentRequestContract
 {
     /**
      * Determine if the user is authorized to make this request.

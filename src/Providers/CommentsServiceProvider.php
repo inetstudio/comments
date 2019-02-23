@@ -2,16 +2,9 @@
 
 namespace InetStudio\Comments\Providers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use InetStudio\Comments\Models\CommentModel;
-use InetStudio\Comments\Observers\CommentObserver;
-use InetStudio\Comments\Events\Back\ModifyCommentEvent;
-use InetStudio\Comments\Services\Front\CommentsService;
-use InetStudio\Comments\Listeners\ClearCommentsCacheListener;
-use InetStudio\Comments\Listeners\AttachUserToCommentsListener;
 
 /**
  * Class CommentsServiceProvider.
@@ -31,18 +24,6 @@ class CommentsServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerTranslations();
         $this->registerEvents();
-        //$this->registerObservers();
-        $this->registerViewComposers();
-    }
-
-    /**
-     * Регистрация привязки в контейнере.
-     *
-     * @return void
-     */
-    public function register(): void
-    {
-        $this->registerBindings();
     }
 
     /**
@@ -117,46 +98,7 @@ class CommentsServiceProvider extends ServiceProvider
      */
     protected function registerEvents(): void
     {
-        Event::listen('InetStudio\ACL\Activations\Contracts\Events\Front\ActivatedEventContract', AttachUserToCommentsListener::class);
-        Event::listen('InetStudio\ACL\Users\Contracts\Events\Front\SocialRegisteredEventContract', AttachUserToCommentsListener::class);
-        Event::listen(ModifyCommentEvent::class, ClearCommentsCacheListener::class);
-    }
-
-    /**
-     * Регистрация наблюдателей.
-     *
-     * @return void
-     */
-    public function registerObservers(): void
-    {
-        CommentModel::observe(CommentObserver::class);
-    }
-
-    /**
-     * Register Comments's view composers.
-     *
-     * @return void
-     */
-    public function registerViewComposers(): void
-    {
-        view()->composer('admin.module.comments::back.includes.*', function ($view) {
-            $view->with('unreadBadge', CommentModel::unread()->count());
-        });
-
-        view()->composer('admin.module.comments::back.partials.analytics.users.statistic', function ($view) {
-            $comments = CommentModel::select(['is_active', DB::raw('count(*) as total')])->groupBy('is_active')->get();
-
-            $view->with('comments', $comments);
-        });
-    }
-
-    /**
-     * Регистрация привязок, алиасов и сторонних провайдеров сервисов.
-     *
-     * @return void
-     */
-    public function registerBindings(): void
-    {
-        $this->app->bind('CommentsService', CommentsService::class);
+        Event::listen('InetStudio\ACL\Activations\Contracts\Events\Front\ActivatedEventContract', 'InetStudio\Comments\Contracts\Listeners\Front\AttachUserToCommentsListenerContract');
+        Event::listen('InetStudio\ACL\Users\Contracts\Events\Front\SocialRegisteredEventContract', 'InetStudio\Comments\Contracts\Listeners\Front\AttachUserToCommentsListenerContract');
     }
 }

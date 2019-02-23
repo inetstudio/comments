@@ -2,11 +2,16 @@
 
 namespace InetStudio\Comments\Services\Front;
 
+use League\Fractal\Manager;
 use Illuminate\Support\Collection;
-use InetStudio\Comments\Models\CommentModel;
-use InetStudio\Comments\Http\Requests\Front\SendCommentRequest;
+use InetStudio\AdminPanel\Base\Services\Front\BaseService;
+use InetStudio\Comments\Contracts\Models\CommentModelContract;
+use InetStudio\Comments\Contracts\Services\Front\CommentsServiceContract;
 
-class CommentsService
+/**
+ * Class CommentsService.
+ */
+class CommentsService extends BaseService implements CommentsServiceContract
 {
     public $availableTypes = [];
 
@@ -15,64 +20,59 @@ class CommentsService
      */
     public function __construct()
     {
+        parent::__construct(app()->make('InetStudio\Comments\Contracts\Models\CommentModelContract'));
+
         $types = config('comments.commentable');
 
-        if ($types) {
-            foreach ($types as $type => $model) {
-                $this->availableTypes[$type] = new $model();
-            }
+        foreach ($types ?? [] as $type => $modelContract) {
+            $this->availableTypes[$type] = app()->make($modelContract);
         }
     }
 
     /**
      * Сохраняем комментарий.
      *
-     * @param SendCommentRequest $request
+     * @param array $data
      * @param string $type
      * @param int $id
-     * @return CommentModel
+     *
+     * @return CommentModelContract|null
      */
-    public function saveComment(SendCommentRequest $request,
+    public function saveComment(array $data,
                                 string $type,
-                                int $id): ?CommentModel
+                                int $id): ?CommentModelContract
     {
-        $usersService = app()->make('InetStudio\ACL\Users\Contracts\Services\Front\UsersServiceContract');
-
         if (! isset($this->availableTypes[$type])) {
             return null;
         }
 
-        if (! is_null($id) && $id > 0 && $item = $this->availableTypes[$type]::find($id)) {
-            $comment = CommentModel::create([
-                'commentable_id' => $item->id,
-                'commentable_type' => get_class($item),
-                'user_id' => $usersService->getUserId(),
-                'name' => $usersService->getUserName($request),
-                'email' => $usersService->getUserEmail($request),
-                'message' => strip_tags($request->get('message')),
-            ]);
+        $usersService = app()->make('InetStudio\ACL\Users\Contracts\Services\Front\UsersServiceContract');
 
-            $comment->saveAsRoot();
+        $request = request();
+        $item = $this->availableTypes[$type]::find($id);
 
-            return $comment;
-        } else {
+        if (! ($item && $item->id)) {
             return null;
         }
-    }
 
-    /**
-     * Получаем дерево комментариев.
-     *
-     * @param $item
-     * @return Collection
-     */
-    public function getCommentsTree($item): Collection
-    {
-        $cacheKey = 'CommentsService_getCommentsTree_'.md5(get_class($item).$item->id);
+        $data = array_merge($data, [
+            'commentable_id' => $item->id,
+            'commentable_type' => get_class($item),
+            'user_id' => $usersService->getUserId(),
+            'name' => $usersService->getUserName($request),
+            'email' => $usersService->getUserEmail($request),
+        ]);
 
-        return \Cache::remember($cacheKey, 1440, function () use ($item) {
-            return collect($item->commentsTree());
-        });
+        $comment = $this->saveModel($data);
+        $comment->saveAsRoot();
+
+        if ($comment && $comment->id) {
+            event(app()->makeWith('InetStudio\Comments\Contracts\Events\Front\SendCommentEventContract', [
+                'object' => $comment,
+            ]));
+        }
+
+        return $comment;
     }
 
     /**
@@ -80,6 +80,7 @@ class CommentsService
      *
      * @param string $type
      * @param int $id
+     *
      * @return Collection
      */
     public function getCommentsTreeByTypeAndId(string $type,
@@ -89,10 +90,34 @@ class CommentsService
             return collect([]);
         }
 
-        if (! is_null($id) && $id > 0 && $item = $this->availableTypes[$type]::find($id)) {
-            return $this->getCommentsTree($item);
-        } else {
+        $item = $this->availableTypes[$type]::find($id);
+
+        if (! ($item && $item->id)) {
             return collect([]);
         }
+
+        return $item->commentsTree();
+    }
+
+    /**
+     * Преобразуем дерево комментариев.
+     *
+     * @param $tree
+     *
+     * @return array
+     */
+    protected function getTree($tree): array
+    {
+        $resource = (app()->makeWith('InetStudio\Comments\Contracts\Transformers\Front\CommentTransformerContract'))
+            ->transformCollection($tree);
+
+        $manager = new Manager();
+
+        $serializer = app()->make('InetStudio\AdminPanel\Contracts\Serializers\SimpleDataArraySerializerContract');
+        $manager->setSerializer($serializer);
+
+        $transformation = $manager->createData($resource)->toArray();
+
+        return $transformation;
     }
 }

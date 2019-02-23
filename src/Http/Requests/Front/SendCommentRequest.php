@@ -4,8 +4,12 @@ namespace InetStudio\Comments\Http\Requests\Front;
 
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
 use Illuminate\Foundation\Http\FormRequest;
+use InetStudio\Comments\Contracts\Http\Requests\Front\SendCommentRequestContract;
 
-class SendCommentRequest extends FormRequest
+/**
+ * Class SendCommentRequest.
+ */
+class SendCommentRequest extends FormRequest implements SendCommentRequestContract
 {
     /**
      * Определить, авторизован ли пользователь для этого запроса.
@@ -50,7 +54,7 @@ class SendCommentRequest extends FormRequest
             'message' => 'required',
         ];
 
-        if (! \Auth::user()) {
+        if (! auth()->user()) {
             $rules = array_merge($rules, [
                 'name' => 'required|max:255',
                 'email' => 'required|max:255|email',

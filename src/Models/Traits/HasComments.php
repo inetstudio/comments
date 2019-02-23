@@ -2,8 +2,11 @@
 
 namespace InetStudio\Comments\Models\Traits;
 
-use InetStudio\Comments\Models\CommentModel;
+use InetStudio\Comments\Contracts\Services\Front\CommentsServiceContract;
 
+/**
+ * Trait HasComments.
+ */
 trait HasComments
 {
     /**
@@ -13,7 +16,9 @@ trait HasComments
      */
     public static function getCommentClassName(): string
     {
-        return CommentModel::class;
+        $model = app()->make('InetStudio\Comments\Contracts\Models\CommentModelContract');
+
+        return get_class($model);
     }
 
     /**
@@ -29,10 +34,14 @@ trait HasComments
     /**
      * Возвращаем комментарии в виде иерархии.
      *
+     * @param CommentsServiceContract $commentsServiceContract
+     *
      * @return array
      */
-    public function commentsTree(): array
+    public function commentsTree(CommentsServiceContract $commentsServiceContract): array
     {
-        return CommentModel::getTree($this);
+        $tree = $this->comments()->where('is_active', 1)->get()->toTree();
+
+        return $commentsServiceContract->getTree($tree);
     }
 }

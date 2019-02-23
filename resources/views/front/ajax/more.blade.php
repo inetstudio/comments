@@ -4,6 +4,4 @@
     ])
 @endforeach
 
-@if ($comments['stop'])
-    [end]
-@endif
+@if ($comments['stop'])[end]@endif

@@ -4,20 +4,27 @@ namespace InetStudio\Comments\Mail;
 
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use InetStudio\Comments\Models\CommentModel;
+use InetStudio\Comments\Contracts\Models\CommentModelContract;
+use InetStudio\Comments\Contracts\Mail\NewCommentMailContract;
 
-class NewCommentMail extends Mailable
+/**
+ * Class NewCommentMail.
+ */
+class NewCommentMail extends Mailable implements NewCommentMailContract
 {
     use SerializesModels;
 
+    /**
+     * @var CommentModelContract
+     */
     protected $comment;
 
     /**
      * NewCommentMail constructor.
      *
-     * @param CommentModel $comment
+     * @param CommentModelContract $comment
      */
-    public function __construct(CommentModel $comment)
+    public function __construct(CommentModelContract $comment)
     {
         $this->comment = $comment;
     }
@@ -29,11 +36,13 @@ class NewCommentMail extends Mailable
      */
     public function build(): self
     {
-        $subject = config('app.name').' | '.((config('comments.mails.subject')) ? config('comments.mails.subject') : 'Новый комментарий');
-        $headers = (config('comments.mails.headers')) ? config('comments.mails.headers') : [];
+        $subject = config('app.name').' | '.((config('comments.mails_admins.subject')) ? config('comments.mails_admins.subject') : 'Новый комментарий');
+        $headers = (config('comments.mails_admins.headers')) ? config('comments.mails_admins.headers') : [];
+
+        $to = config('comments.mails_admins.to');
 
         return $this->from(config('mail.from.address'), config('mail.from.name'))
-            ->to(config('comments.mails.to'), '')
+            ->to($to, '')
             ->subject($subject)
             ->withSwiftMessage(function ($message) use ($headers) {
                 $messageHeaders = $message->getHeaders();
@@ -42,6 +51,6 @@ class NewCommentMail extends Mailable
                     $messageHeaders->addTextHeader($header, $value);
                 }
             })
-            ->view('admin.module.comments::mails.comment', ['comment' => $this->comment]);
+            ->view('admin.module.comments::mails.comment_admins', ['comment' => $this->comment]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace InetStudio\Comments\Transformers\Back;
 
-use Illuminate\Support\Str;
 use League\Fractal\TransformerAbstract;
 use InetStudio\Comments\Contracts\Models\CommentModelContract;
 use InetStudio\Comments\Contracts\Transformers\Back\CommentTransformerContract;
@@ -37,7 +36,7 @@ class CommentTransformer extends TransformerAbstract implements CommentTransform
             ])->render(),
             'name' => $comment->name,
             'email' => $comment->email,
-            'message' => Str::limit($comment->message, 150, '...'),
+            'message' => $comment->message,
             'created_at' => (string) $comment->created_at,
             'material' => view('admin.module.comments::back.partials.datatables.material', [
                 'item' => $comment->commentable,

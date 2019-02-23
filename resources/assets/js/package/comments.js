@@ -1,94 +1,119 @@
 let comments = {};
 
 comments.init = function () {
-    $('.comments-package .dataTable').each(function () {
-        let table = $(this);
+    let $table = $('#comments_table .dataTable');
+    let $tableContent = $('#comments_table .ibox-content');
 
-        $('.comments-package .table-group-buttons a').each(function () {
-            let btn = $(this);
+    $table.on('ifClicked', '#comment_all', function () {
+        $('.group-element').iCheck('toggle');
+    });
 
-            btn.on('click', function () {
-                let data = $('.comments-package .group-element').serializeJSON();
+    $('#comments_table .table-group-buttons a').on('click', function () {
+        let $btn = $(this);
 
-                swal({
-                    title: "Вы уверены?",
-                    type: "warning",
-                    showCancelButton: true,
-                    cancelButtonText: "Отмена",
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Да",
-                    closeOnConfirm: true
-                }).then((result) => {
-                    if (result.value) {
-                        $.ajax({
-                            url: btn.attr('data-url'),
-                            method: "POST",
-                            dataType: "json",
-                            data: data,
-                            success: function (data) {
-                                if (data.success === true) {
-                                    swal({
-                                        title: "Записи обновлены",
-                                        type: "success"
-                                    });
-                                    table.DataTable().ajax.reload();
-                                } else {
-                                    swal({
-                                        title: "Ошибка",
-                                        text: "При обновлении записей произошла ошибка",
-                                        type: "error"
-                                    });
-                                }
-                            }
-                        });
+        let url = $btn.data('url');
+        let data = $table.find('.group-element').serializeJSON();
+
+        swal({
+            title: "Вы уверены?",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "Отмена",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Да"
+        }).then((result) => {
+            if (result.value) {
+                $tableContent.toggleClass('sk-loading');
+
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    dataType: "json",
+                    data: data,
+                    success: function (data) {
+                        $tableContent.toggleClass('sk-loading');
+                        $('#comment_all').iCheck('uncheck');
+
+                        if (data.success === true) {
+                            swal({
+                                title: "Записи обновлены",
+                                type: "success"
+                            });
+                            $table.DataTable().ajax.reload(null, false);
+                        } else {
+                            showError('При обновлении записей произошла ошибка');
+                        }
+                    },
+                    error: function () {
+                        $tableContent.toggleClass('sk-loading');
+                        $('#comment_all').iCheck('uncheck');
+
+                        showError('При обновлении записей произошла ошибка');
                     }
                 });
-            });
+            }
         });
     });
 
-    $('.comments-package .dataTable').each(function () {
-        $(this).on('draw.dt', function () {
-            if ($('.i-checks').length > 0) {
-                $('.i-checks').iCheck({
-                    checkboxClass: 'icheckbox_square-green',
-                    radioClass: 'iradio_square-green'
-                });
-            }
+    $table.on('draw.dt', function () {
+        if ($('.i-checks').length > 0) {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+        }
 
-            $('input.switchery').each(function () {
-                new Switchery($(this).get(0), {
-                    size: 'small'
-                });
+        let $switchers = $table.find('input.switchery');
 
-                let url = ($(this).attr('data-target'));
+        $switchers.each(function () {
+            new Switchery($(this).get(0), {
+                size: 'small'
+            });
+        });
 
-                if (url) {
-                    $(this).on('change', function () {
-                        $.ajax({
-                            url: url,
-                            method: 'POST',
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data.success === true) {
-                                    swal({
-                                        title: "Запись изменена",
-                                        type: "success"
-                                    });
-                                } else {
-                                    swal({
-                                        title: "Ошибка",
-                                        text: "Произошла ошибка",
-                                        type: "error"
-                                    });
-                                }
-                            }
+        $switchers.on('change', function () {
+            let $input = $(this);
+
+            let url = $input.data('target');
+            let val = $input.val();
+
+            $tableContent.toggleClass('sk-loading');
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    comments: [val]
+                },
+                success: function (data) {
+                    $tableContent.toggleClass('sk-loading');
+
+                    if (data.success === true) {
+                        swal({
+                            title: "Запись изменена",
+                            type: "success"
                         });
-                    });
+                    } else {
+                        showError('Произошла ошибка');
+                    }
+                },
+                error: function () {
+                    $tableContent.toggleClass('sk-loading');
+
+                    showError('Произошла ошибка');
                 }
             });
         });
     });
+
+    function showError(text) {
+        swal({
+            title: "Ошибка",
+            text: text,
+            type: "error"
+        });
+    }
 };
 
 module.exports = comments;
