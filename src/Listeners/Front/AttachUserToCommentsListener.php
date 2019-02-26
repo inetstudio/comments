@@ -18,11 +18,11 @@ class AttachUserToCommentsListener implements AttachUserToCommentsListenerContra
      */
     public function handle($event): void
     {
-        $commentsRepository = app()->make('InetStudio\Comments\Contracts\Repositories\CommentsRepositoryContract');
+        $commentsService = app()->make('InetStudio\Comments\Contracts\Services\Back\CommentsServiceContract');
 
         $user = $event->user;
 
-        $items = $commentsRepository->searchItems([
+        $items = $commentsService->model::where([
             ['user_id', '=', 0],
             ['email', '=', $user->email],
         ]);
@@ -33,7 +33,7 @@ class AttachUserToCommentsListener implements AttachUserToCommentsListenerContra
                 'name' => $user->name,
             ];
 
-            $commentsRepository->save($data, $item['id']);
+            $item->update($data);
         }
     }
 }
