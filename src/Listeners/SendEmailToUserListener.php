@@ -18,19 +18,19 @@ class SendEmailToUserListener implements SendEmailToUserListenerContract
      */
     public function handle($event)
     {
-        $comment = $event->object;
+        $item = $event->object;
 
         if (config('comments.mails_users.send')) {
             if (config('comments.queue.enable')) {
                 $queue = config('comments.queue.name') ?? 'comments_notify';
 
-                $comment->notify(
-                    app()->makeWith('InetStudio\Comments\Contracts\Notifications\AnswerQueueableNotificationContract', compact('comment'))
+                $item->notify(
+                    app()->makeWith('InetStudio\Comments\Contracts\Notifications\AnswerQueueableNotificationContract', compact('item'))
                         ->onQueue($queue)
                 );
             } else {
-                $comment->notify(
-                    app()->makeWith('InetStudio\Comments\Contracts\Notifications\AnswerNotificationContract', compact('comment'))
+                $item->notify(
+                    app()->makeWith('InetStudio\Comments\Contracts\Notifications\AnswerNotificationContract', compact('item'))
                 );
             }
         }

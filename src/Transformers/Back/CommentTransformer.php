@@ -14,35 +14,35 @@ class CommentTransformer extends TransformerAbstract implements CommentTransform
     /**
      * Подготовка данных для отображения в таблице.
      *
-     * @param CommentModelContract $comment
+     * @param CommentModelContract $item
      *
      * @return array
      *
      * @throws \Throwable
      */
-    public function transform(CommentModelContract $comment): array
+    public function transform(CommentModelContract $item): array
     {
         return [
             'checkbox' => view('admin.module.comments::back.partials.datatables.checkbox', [
-                'id' => $comment->id,
+                'id' => $item->id,
             ])->render(),
-            'id' => (int) $comment->id,
+            'id' => (int) $item->id,
             'read' => view('admin.module.comments::back.partials.datatables.read', [
-                'is_read' => $comment->is_read,
+                'is_read' => $item->is_read,
             ])->render(),
             'active' => view('admin.module.comments::back.partials.datatables.active', [
-                'id' => $comment->id,
-                'is_active' => $comment->is_active,
+                'id' => $item->id,
+                'is_active' => $item->is_active,
             ])->render(),
-            'name' => $comment->name,
-            'email' => $comment->email,
-            'message' => $comment->message,
-            'created_at' => (string) $comment->created_at,
+            'name' => $item->name,
+            'email' => $item->email,
+            'message' => $item->message,
+            'created_at' => (string) $item->created_at,
             'material' => view('admin.module.comments::back.partials.datatables.material', [
-                'item' => $comment->commentable,
+                'item' => $item->commentable,
             ])->render(),
             'actions' => view('admin.module.comments::back.partials.datatables.actions', [
-                'id' => $comment->id,
+                'id' => $item->id,
             ])->render(),
         ];
     }

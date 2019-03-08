@@ -17,16 +17,16 @@ class NewCommentMail extends Mailable implements NewCommentMailContract
     /**
      * @var CommentModelContract
      */
-    protected $comment;
+    protected $item;
 
     /**
      * NewCommentMail constructor.
      *
-     * @param CommentModelContract $comment
+     * @param CommentModelContract $item
      */
-    public function __construct(CommentModelContract $comment)
+    public function __construct(CommentModelContract $item)
     {
-        $this->comment = $comment;
+        $this->item = $item;
     }
 
     /**
@@ -36,8 +36,8 @@ class NewCommentMail extends Mailable implements NewCommentMailContract
      */
     public function build(): self
     {
-        $subject = config('app.name').' | '.((config('comments.mails_admins.subject')) ? config('comments.mails_admins.subject') : 'Новый комментарий');
-        $headers = (config('comments.mails_admins.headers')) ? config('comments.mails_admins.headers') : [];
+        $subject = config('app.name').' | '.config('comments.mails_admins.subject', 'Новый комментарий');
+        $headers = config('comments.mails_admins.headers', []);
 
         $to = config('comments.mails_admins.to');
 
@@ -51,6 +51,6 @@ class NewCommentMail extends Mailable implements NewCommentMailContract
                     $messageHeaders->addTextHeader($header, $value);
                 }
             })
-            ->view('admin.module.comments::mails.comment_admins', ['comment' => $this->comment]);
+            ->view('admin.module.comments::mails.comment_admins', ['item' => $this->item]);
     }
 }

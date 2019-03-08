@@ -5,15 +5,15 @@ namespace InetStudio\Comments\Http\Controllers\Back;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use InetStudio\Comments\Contracts\Services\Back\CommentsModerateServiceContract;
-use InetStudio\Comments\Contracts\Http\Controllers\Back\CommentsControllerContract;
 use InetStudio\Comments\Contracts\Http\Responses\Back\Moderate\ReadResponseContract;
 use InetStudio\Comments\Contracts\Http\Responses\Back\Moderate\DestroyResponseContract;
 use InetStudio\Comments\Contracts\Http\Responses\Back\Moderate\ActivityResponseContract;
+use InetStudio\Comments\Contracts\Http\Controllers\Back\CommentsModerateControllerContract;
 
 /**
  * Class CommentsModerateController.
  */
-class CommentsModerateController extends Controller implements CommentsControllerContract
+class CommentsModerateController extends Controller implements CommentsModerateControllerContract
 {
     /**
      * Изменение активности.

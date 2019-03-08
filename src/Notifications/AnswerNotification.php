@@ -15,16 +15,16 @@ class AnswerNotification extends Notification implements AnswerNotificationContr
     /**
      * @var CommentModelContract
      */
-    protected $comment;
+    protected $item;
 
     /**
      * AnswerNotification constructor.
      *
-     * @param CommentModelContract $comment
+     * @param CommentModelContract $item
      */
-    public function __construct(CommentModelContract $comment)
+    public function __construct(CommentModelContract $item)
     {
-        $this->comment = $comment;
+        $this->item = $item;
     }
 
     /**
@@ -51,7 +51,7 @@ class AnswerNotification extends Notification implements AnswerNotificationContr
     public function toMail($notifiable): AnswerMailContract
     {
         return app()->makeWith('InetStudio\Comments\Contracts\Mail\AnswerMailContract', [
-            'comment' => $this->comment,
+            'item' => $this->item,
         ]);
     }
 
@@ -65,7 +65,7 @@ class AnswerNotification extends Notification implements AnswerNotificationContr
     public function toDatabase($notifiable): array
     {
         return [
-            'comment_id' => $this->comment->id,
+            'comment_id' => $this->item->id,
         ];
     }
 }

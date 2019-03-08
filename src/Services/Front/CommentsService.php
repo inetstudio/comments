@@ -63,16 +63,16 @@ class CommentsService extends BaseService implements CommentsServiceContract
             'email' => $usersService->getUserEmail($request),
         ]);
 
-        $comment = $this->saveModel($data);
-        $comment->saveAsRoot();
+        $item = $this->saveModel($data);
+        $item->saveAsRoot();
 
-        if ($comment && $comment->id) {
+        if ($item && $item->id) {
             event(app()->makeWith('InetStudio\Comments\Contracts\Events\Front\SendCommentEventContract', [
-                'object' => $comment,
+                'object' => $item,
             ]));
         }
 
-        return $comment;
+        return $item;
     }
 
     /**

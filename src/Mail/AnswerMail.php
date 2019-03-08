@@ -17,16 +17,16 @@ class AnswerMail extends Mailable implements AnswerMailContract
     /**
      * @var CommentModelContract
      */
-    protected $comment;
+    protected $item;
 
     /**
      * AnswerMail constructor.
      *
-     * @param CommentModelContract $comment
+     * @param CommentModelContract $item
      */
-    public function __construct(CommentModelContract $comment)
+    public function __construct(CommentModelContract $item)
     {
-        $this->comment = $comment;
+        $this->item = $item;
     }
 
     /**
@@ -40,7 +40,7 @@ class AnswerMail extends Mailable implements AnswerMailContract
         $headers = (config('comments.mails_users.headers')) ? config('comments.mails_users.headers') : [];
 
         return $this->from(config('mail.from.address'), config('mail.from.name'))
-            ->to($this->comment->email, $this->comment->name)
+            ->to($this->item->email, $this->item->name)
             ->subject($subject)
             ->withSwiftMessage(function ($message) use ($headers) {
                 $messageHeaders = $message->getHeaders();
@@ -49,6 +49,6 @@ class AnswerMail extends Mailable implements AnswerMailContract
                     $messageHeaders->addTextHeader($header, $value);
                 }
             })
-            ->view('admin.module.comments::mails.comment_user', ['comment' => $this->comment]);
+            ->view('admin.module.comments::mails.comment_user', ['item' => $this->item]);
     }
 }

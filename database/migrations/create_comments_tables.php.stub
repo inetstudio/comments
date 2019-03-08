@@ -10,10 +10,10 @@ use Illuminate\Database\Migrations\Migration;
 class CreateCommentsTables extends Migration
 {
     /**
-    * Run the migrations.
-    *
-    * @return void
-    */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
@@ -34,10 +34,10 @@ class CreateCommentsTables extends Migration
     }
 
     /**
-    * Reverse the migrations.
-    *
-    * @return void
-    */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('comments');

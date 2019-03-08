@@ -3,7 +3,7 @@
 namespace InetStudio\Comments\Notifications;
 
 use Illuminate\Notifications\Notification;
-use InetStudio\Comments\Mail\NewCommentMail;
+use InetStudio\Comments\Contracts\Mail\NewCommentMailContract;
 use InetStudio\Comments\Contracts\Models\CommentModelContract;
 use InetStudio\Comments\Contracts\Notifications\NewCommentNotificationContract;
 
@@ -15,16 +15,16 @@ class NewCommentNotification extends Notification implements NewCommentNotificat
     /**
      * @var CommentModelContract
      */
-    protected $comment;
+    protected $item;
 
     /**
      * NewCommentNotification constructor.
      *
-     * @param CommentModelContract $comment
+     * @param CommentModelContract $item
      */
-    public function __construct(CommentModelContract $comment)
+    public function __construct(CommentModelContract $item)
     {
-        $this->comment = $comment;
+        $this->item = $item;
     }
 
     /**
@@ -46,11 +46,13 @@ class NewCommentNotification extends Notification implements NewCommentNotificat
      *
      * @param $notifiable
      *
-     * @return NewCommentMail
+     * @return NewCommentMailContract
      */
-    public function toMail($notifiable): NewCommentMail
+    public function toMail($notifiable): NewCommentMailContract
     {
-        return new NewCommentMail($this->comment);
+        return app()->makeWith('InetStudio\Comments\Contracts\Mail\NewCommentMailContract', [
+            'item' => $this->item,
+        ]);
     }
 
     /**
@@ -63,7 +65,7 @@ class NewCommentNotification extends Notification implements NewCommentNotificat
     public function toDatabase($notifiable): array
     {
         return [
-            'comment_id' => $this->comment->id,
+            'comment_id' => $this->item->id,
         ];
     }
 }

@@ -18,19 +18,19 @@ class SendEmailToAdminListener implements SendEmailToAdminListenerContract
      */
     public function handle($event)
     {
-        $comment = $event->object;
+        $item = $event->object;
 
         if (config('comments.mails_admins.send')) {
             if (config('comments.queue.enable')) {
                 $queue = config('comments.queue.name') ?? 'comments_notify';
 
-                $comment->notify(
-                    app()->makeWith('InetStudio\Comments\Contracts\Notifications\NewCommentQueueableNotificationContract', compact('comment'))
+                $item->notify(
+                    app()->makeWith('InetStudio\Comments\Contracts\Notifications\NewCommentQueueableNotificationContract', compact('item'))
                         ->onQueue($queue)
                 );
             } else {
-                $comment->notify(
-                    app()->makeWith('InetStudio\Comments\Contracts\Notifications\NewCommentNotificationContract', compact('comment'))
+                $item->notify(
+                    app()->makeWith('InetStudio\Comments\Contracts\Notifications\NewCommentNotificationContract', compact('item'))
                 );
             }
         }
