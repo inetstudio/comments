@@ -2,7 +2,6 @@
 
 namespace InetStudio\Comments\Models;
 
-use Laravel\Scout\Searchable;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -19,7 +18,6 @@ class CommentModel extends Model implements CommentModelContract
     use HasUser;
     use NodeTrait;
     use Notifiable;
-    use Searchable;
     use SoftDeletes;
     use BuildQueryScopeTrait;
 
@@ -64,18 +62,6 @@ class CommentModel extends Model implements CommentModelContract
         'updated_at',
         'deleted_at',
     ];
-
-    /**
-     * Настройка полей для поиска.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        $arr = array_only($this->toArray(), ['id', 'user_id', 'name', 'email', 'message']);
-
-        return $arr;
-    }
 
     /**
      * Сеттер атрибута is_read.
