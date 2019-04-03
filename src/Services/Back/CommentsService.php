@@ -77,8 +77,6 @@ class CommentsService extends BaseService implements CommentsServiceContract
             $item->appendToNode($parentItem)->save();
         }
 
-        $item->searchable();
-
         event(app()->makeWith('InetStudio\Comments\Contracts\Events\Back\ModifyCommentEventContract', [
             'object' => $item,
         ]));
