@@ -22,7 +22,7 @@ class AttachUserToCommentsListener implements AttachUserToCommentsListenerContra
 
         $user = $event->user;
 
-        $commentsService->model::where([
+        $commentsService->getModel()::where([
             ['user_id', '=', 0],
             ['email', '=', $user->email],
         ])->update([

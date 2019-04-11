@@ -4,7 +4,7 @@ namespace InetStudio\Comments\Services\Back;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use InetStudio\AdminPanel\Base\Services\Back\BaseService;
+use InetStudio\AdminPanel\Base\Services\BaseService;
 use InetStudio\Comments\Contracts\Models\CommentModelContract;
 use InetStudio\Comments\Contracts\Services\Back\CommentsServiceContract;
 

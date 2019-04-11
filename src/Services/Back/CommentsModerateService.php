@@ -2,7 +2,7 @@
 
 namespace InetStudio\Comments\Services\Back;
 
-use InetStudio\AdminPanel\Base\Services\Back\BaseService;
+use InetStudio\AdminPanel\Base\Services\BaseService;
 use InetStudio\Comments\Contracts\Services\Back\CommentsModerateServiceContract;
 
 /**

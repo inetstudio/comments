@@ -57,7 +57,7 @@ class CommentsController extends Controller implements CommentsControllerContrac
             'g-recaptcha-response.captcha'  => 'Неверный код капча',
         ])->validate();
 
-        $data = $request->only($commentsService->model->getFillable());
+        $data = $request->only($commentsService->getModel()->getFillable());
 
         $item = $commentsService->saveComment($data, $type, $id);
 

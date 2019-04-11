@@ -4,7 +4,7 @@ namespace InetStudio\Comments\Services\Front;
 
 use League\Fractal\Manager;
 use Illuminate\Support\Collection;
-use InetStudio\AdminPanel\Base\Services\Front\BaseService;
+use InetStudio\AdminPanel\Base\Services\BaseService;
 use InetStudio\Comments\Contracts\Models\CommentModelContract;
 use InetStudio\Comments\Contracts\Services\Front\CommentsServiceContract;
 

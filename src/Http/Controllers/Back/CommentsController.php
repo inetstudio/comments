@@ -134,7 +134,7 @@ class CommentsController extends Controller implements CommentsControllerContrac
      */
     protected function save(CommentsServiceContract $commentsService, SaveCommentRequestContract $request, int $id = 0): SaveResponseContract
     {
-        $data = $request->only($commentsService->model->getFillable());
+        $data = $request->only($commentsService->getModel()->getFillable());
         $parentId = $request->get('parent_comment_id') ?? 0;
 
         $item = $commentsService->save($data, $id, $parentId);
