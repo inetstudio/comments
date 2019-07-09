@@ -1,30 +1,33 @@
 {
-    "name": "inetstudio/comments",
-    "description": "Package for comments",
-    "homepage": "https://github.com/inetstudio/comments",
-    "license": "MIT",
-    "authors": [
-      {
-        "name": "Konstantin Bukin",
-        "email": "bukin@inetstudio.ru"
-      }
-    ],
-    "require": {
-      "arcanedev/no-captcha": "^9.0",
-      "guzzlehttp/guzzle": "^6.3",
-      "kalnoy/nestedset": "^4.3"
-    },
-    "autoload": {
-      "psr-4": {
-        "InetStudio\\Comments\\": "src/"
-      }
-    },
-    "extra": {
-      "laravel": {
-        "providers": [
-          "InetStudio\\Comments\\Providers\\CommentsBindingsServiceProvider",
-          "InetStudio\\Comments\\Providers\\CommentsServiceProvider"
-        ]
-      }
+  "name": "inetstudio/comments",
+  "description": "Package for comments",
+  "homepage": "https://github.com/inetstudio/comments",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Konstantin Bukin",
+      "email": "bukin@inetstudio.ru"
     }
+  ],
+  "require": {
+    "arcanedev/no-captcha": "^9.0",
+    "guzzlehttp/guzzle": "^6.3",
+    "inetstudio/admin-panel": "1.8.*",
+    "kalnoy/nestedset": "^4.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "InetStudio\\CommentsPackage\\": "package/src",
+      "InetStudio\\CommentsPackage\\Comments\\": "entities/comments/src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "InetStudio\\CommentsPackage\\Providers\\ServiceProvider",
+        "InetStudio\\CommentsPackage\\Comments\\Providers\\BindingsServiceProvider",
+        "InetStudio\\CommentsPackage\\Comments\\Providers\\ServiceProvider"
+      ]
+    }
+  }
 }
