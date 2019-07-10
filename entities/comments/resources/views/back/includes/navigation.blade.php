@@ -1,7 +1,7 @@
-@inject('commentsService', 'InetStudio\CommentsPackage\Comments\Contracts\Services\Back\CommentsServiceContract')
+@inject('commentsService', 'InetStudio\CommentsPackage\Comments\Contracts\Services\Back\ItemsServiceContract')
 
 @php
-    $unreadBadge = $commentsService->getUnreadCommentsCount();
+    $unreadBadge = $commentsService->getUnreadItemsCount();
 @endphp
 
 <li class="{{ isActiveRoute('back.comments.*') }}">

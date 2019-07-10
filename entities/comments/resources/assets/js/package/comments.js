@@ -1,6 +1,15 @@
 let comments = {};
 
 comments.init = function() {
+  if (!window.Admin.vue.modulesComponents.modules.hasOwnProperty('comments')) {
+    window.Admin.vue.modulesComponents.modules = Object.assign(
+        {}, window.Admin.vue.modulesComponents.modules, {
+          comments: {
+            components: [],
+          },
+        });
+  }
+
   let $table = $('#comments_table .dataTable');
   let $tableContent = $('#comments_table .ibox-content');
 

@@ -115,7 +115,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
      *
      * @return int
      */
-    public function getUnreadCommentsCount(): int
+    public function getUnreadItemsCount(): int
     {
         return $this->model::unread()->count();
     }
@@ -125,7 +125,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
      *
      * @return mixed
      */
-    public function getCommentsStatisticByActivity()
+    public function getItemsStatisticByActivity()
     {
         $comments = $this->model::select(['is_active', DB::raw('count(*) as total')])
             ->groupBy('is_active')

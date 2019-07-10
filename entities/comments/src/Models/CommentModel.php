@@ -140,7 +140,7 @@ class CommentModel extends Model implements CommentModelContract
     {
         $value = (isset($value['text'])) ? $value['text'] : (! is_array($value) ? $value : '');
 
-        $this->attributes['question'] = trim(str_replace('&nbsp;', ' ', strip_tags($value)));
+        $this->attributes['message'] = trim(str_replace('&nbsp;', ' ', strip_tags($value)));
     }
 
     /**

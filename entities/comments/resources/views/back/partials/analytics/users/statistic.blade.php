@@ -1,7 +1,7 @@
-@inject('commentsService', 'InetStudio\CommentsPackage\Comments\Contracts\Services\Back\CommentsServiceContract')
+@inject('commentsService', 'InetStudio\CommentsPackage\Comments\Contracts\Services\Back\ItemsServiceContract')
 
 @php
-    $comments = $commentsService->getCommentsStatisticByActivity();
+    $comments = $commentsService->getItemsStatisticByActivity();
 
     $colors = [
         0 => 'warning',
