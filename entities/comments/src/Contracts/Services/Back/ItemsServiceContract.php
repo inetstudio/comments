@@ -36,12 +36,12 @@ interface ItemsServiceContract extends BaseServiceContract
      *
      * @return int
      */
-    public function getUnreadCommentsCount(): int;
+    public function getUnreadItemsCount(): int;
 
     /**
      * Возвращаем статистику комментариев по активности.
      *
      * @return mixed
      */
-    public function getCommentsStatisticByActivity();
+    public function getItemsStatisticByActivity();
 }
