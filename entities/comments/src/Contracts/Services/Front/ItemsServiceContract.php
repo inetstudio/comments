@@ -17,10 +17,11 @@ interface ItemsServiceContract extends BaseServiceContract
      * @param  array  $data
      * @param  string  $type
      * @param  int  $id
+     * @param  int  $parentId
      *
      * @return CommentModelContract|null
      */
-    public function save(array $data, string $type, int $id): ?CommentModelContract;
+    public function save(array $data, string $type, int $id, int $parentId): ?CommentModelContract;
 
     /**
      * Получаем дерево комментариев по типу и id материала.

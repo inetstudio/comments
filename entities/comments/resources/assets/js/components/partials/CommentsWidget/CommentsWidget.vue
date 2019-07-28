@@ -51,7 +51,7 @@
     methods: {
       getDefaultModel() {
         return _.merge(this.getDefaultWidgetModel(), {
-          view: 'admin.module.comments.comments::front.partials.content.comments_widget',
+          view: 'admin.module.comments::front.partials.content.comments_widget',
           params: {
             id: 0,
             title: ''

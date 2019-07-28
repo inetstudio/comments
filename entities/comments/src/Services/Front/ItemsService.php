@@ -38,17 +38,36 @@ class ItemsService extends BaseService implements ItemsServiceContract
     }
 
     /**
+     * Возвращаем тип по классу модели.
+     *
+     * @param  string  $modelClass
+     *
+     * @return string
+     */
+    public function getTypeByModel(string $modelClass): string
+    {
+        foreach ($this->availableTypes as $type => $model) {
+            if ($modelClass == get_class($model)) {
+                return $type;
+            }
+        }
+
+        return '';
+    }
+
+    /**
      * Сохраняем комментарий.
      *
      * @param  array  $data
      * @param  string  $type
      * @param  int  $id
+     * @param  int  $parentId
      *
      * @return CommentModelContract|null
      *
      * @throws BindingResolutionException
      */
-    public function save(array $data, string $type, int $id): ?CommentModelContract
+    public function save(array $data, string $type, int $id, int $parentId): ?CommentModelContract
     {
         if (! isset($this->availableTypes[$type])) {
             return null;
@@ -63,6 +82,19 @@ class ItemsService extends BaseService implements ItemsServiceContract
             return null;
         }
 
+        if ($parentId) {
+            $parentItem = $this->getItemById(
+                $parentId,
+                [
+                    'columns' => ['_lft', '_rgt']
+                ]
+            );
+        }
+
+        if (isset($parentItem) && ($item['id'] != $parentItem['commentable_id'] || get_class($item) != $parentItem['commentable_type'])) {
+            return null;
+        }
+
         $data = array_merge($data, [
             'commentable_id' => $item->id,
             'commentable_type' => get_class($item),
@@ -72,7 +104,12 @@ class ItemsService extends BaseService implements ItemsServiceContract
         ]);
 
         $item = $this->saveModel($data);
-        $item->saveAsRoot();
+
+        if (isset($parentItem)) {
+            $item->appendToNode($parentItem)->save();
+        } else {
+            $item->saveAsRoot();
+        }
 
         if ($item && $item->id) {
             event(

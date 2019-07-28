@@ -35,8 +35,9 @@ class ItemsController extends Controller implements ItemsControllerContract
         string $id
     ): SendResponseContract {
         $data = $request->only($commentsService->getModel()->getFillable());
+        $parentId = $request->get('parent_comment_id', 0);
 
-        $item = $commentsService->save($data, $type, $id);
+        $item = $commentsService->save($data, $type, $id, $parentId);
 
         $result = ($item && isset($item->id));
 
