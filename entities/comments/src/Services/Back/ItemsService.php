@@ -74,12 +74,16 @@ class ItemsService extends BaseService implements ItemsServiceContract
                 ]
             );
 
+            $itemData['commentable_id'] = $parentItem->commentable_id;
+            $itemData['commentable_type'] = $parentItem->commentable_type;
+        }
+
+        if (empty($itemData['name']) || $parentId) {
             $user = auth()->user();
+
             $itemData['user_id'] = $user->id;
             $itemData['name'] = $user->name;
             $itemData['email'] = $user->email;
-            $itemData['commentable_id'] = $parentItem->commentable_id;
-            $itemData['commentable_type'] = $parentItem->commentable_type;
         }
 
         $item = $this->saveModel($itemData, $id);

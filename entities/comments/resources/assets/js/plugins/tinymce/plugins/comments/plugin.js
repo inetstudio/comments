@@ -31,9 +31,19 @@ window.tinymce.PluginManager.add('comments', function(editor) {
 
   editor.addButton('add_comments_widget', {
     title: 'Виджет комментариев',
-    icon: 'fa fa-comment-dots',
+    icon: 'fa fa-comments',
     onclick: function() {
       let content = editor.selection.getContent();
+
+      if ($('#object-id').val() === '') {
+        swal({
+          title: 'Ошибка',
+          text: 'Для добавления виджета необходимо сохранить материал',
+          type: 'error',
+        });
+
+        return false;
+      }
 
       let isComments = /<img class="content-widget".+data-type="comments".+>/g.test(
           content);

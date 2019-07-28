@@ -45,9 +45,7 @@
         options: {
           loading: true,
         },
-        events: {
-          widgetLoaded: function(component) {}
-        },
+        events: {},
       };
     },
     methods: {
@@ -69,14 +67,33 @@
       save() {
         let component = this;
 
-        if (component.model.params.id === 0) {
+        if (component.model.params.title === '') {
           $(component.$refs.modal).modal('hide');
 
           return;
         }
 
-        component.saveWidget(function() {
-          $(component.$refs.modal).modal('hide');
+        let url = (component.model.params.id !== 0) ? route('back.comments.update', component.model.params.id): route('back.comments.store');
+        let data = {
+          is_read: 1,
+          is_active: 1,
+          message: component.model.params.title,
+          commentable_id: $('#object-id').val(),
+          commentable_type: $('#object-type').val()
+        };
+
+        if (component.model.params.id !== 0) {
+          data._method = 'PUT';
+        }
+
+        component.options.loading = true;
+
+        axios.post(url, data).then(response => {
+          component.model.params.id = response.data.id;
+
+          component.saveWidget(function() {
+            $(component.$refs.modal).modal('hide');
+          });
         });
       },
     },

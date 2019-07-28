@@ -37,11 +37,15 @@ class SaveResponse implements SaveResponseContract
     {
         $item = $this->item->fresh();
 
-        return response()->redirectToRoute(
-            'back.comments.edit',
-            [
-                $item['id'],
-            ]
-        );
+        if ($request->ajax()) {
+            return response()->json($item, 200);
+        } else {
+            return response()->redirectToRoute(
+                'back.comments.edit',
+                [
+                    $item['id'],
+                ]
+            );
+        }
     }
 }
