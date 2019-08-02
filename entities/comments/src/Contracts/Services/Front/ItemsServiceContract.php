@@ -2,7 +2,6 @@
 
 namespace InetStudio\CommentsPackage\Comments\Contracts\Services\Front;
 
-use Illuminate\Support\Collection;
 use InetStudio\AdminPanel\Base\Contracts\Services\BaseServiceContract;
 use InetStudio\CommentsPackage\Comments\Contracts\Models\CommentModelContract;
 
@@ -28,10 +27,11 @@ interface ItemsServiceContract extends BaseServiceContract
      *
      * @param  string  $type
      * @param  int  $id
+     * @param  array  $params
      *
-     * @return Collection
+     * @return mixed
      */
-    public function getItemsTreeByTypeAndId(string $type, int $id): Collection;
+    public function getItemsTreeByTypeAndId(string $type, int $id, array $params = []);
 
     /**
      * Преобразуем дерево комментариев.

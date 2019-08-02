@@ -3,7 +3,6 @@
 namespace InetStudio\CommentsPackage\Comments\Services\Front;
 
 use League\Fractal\Manager;
-use Illuminate\Support\Collection;
 use InetStudio\AdminPanel\Base\Services\BaseService;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\CommentsPackage\Comments\Contracts\Models\CommentModelContract;
@@ -23,18 +22,12 @@ class ItemsService extends BaseService implements ItemsServiceContract
      * ItemsService constructor.
      *
      * @param  CommentModelContract  $model
-     *
-     * @throws BindingResolutionException
      */
     public function __construct(CommentModelContract $model)
     {
         parent::__construct($model);
 
-        $types = config('comments.commentable');
-
-        foreach ($types ?? [] as $type => $modelContract) {
-            $this->availableTypes[$type] = app()->make($modelContract);
-        }
+        $this->availableTypes = config('comments.commentable', []);
     }
 
     /**
@@ -43,11 +36,15 @@ class ItemsService extends BaseService implements ItemsServiceContract
      * @param  string  $modelClass
      *
      * @return string
+     *
+     * @throws BindingResolutionException
      */
     public function getTypeByModel(string $modelClass): string
     {
         foreach ($this->availableTypes as $type => $model) {
-            if ($modelClass == get_class($model)) {
+            $object = app()->make($model);
+
+            if ($modelClass == get_class($object)) {
                 return $type;
             }
         }
@@ -73,10 +70,12 @@ class ItemsService extends BaseService implements ItemsServiceContract
             return null;
         }
 
+        $model = app()->make($this->availableTypes[$type]);
+
         $usersService = app()->make('InetStudio\ACL\Users\Contracts\Services\Front\UsersServiceContract');
 
         $request = request();
-        $item = $this->availableTypes[$type]::find($id);
+        $item = $model::find($id);
 
         if (! ($item && $item->id)) {
             return null;
@@ -127,22 +126,27 @@ class ItemsService extends BaseService implements ItemsServiceContract
      *
      * @param  string  $type
      * @param  int  $id
+     * @param  array  $params
      *
-     * @return Collection
+     * @return mixed
+     *
+     * @throws BindingResolutionException
      */
-    public function getItemsTreeByTypeAndId(string $type, int $id): Collection
+    public function getItemsTreeByTypeAndId(string $type, int $id, array $params = [])
     {
         if (! isset($this->availableTypes[$type])) {
             return collect([]);
         }
 
-        $item = $this->availableTypes[$type]::find($id);
+        $model = app()->make($this->availableTypes[$type]);
+
+        $item = $model::find($id);
 
         if (! ($item && $item->id)) {
             return collect([]);
         }
 
-        return $item->commentsTree();
+        return $item->comments()->get()->toTree();
     }
 
     /**
