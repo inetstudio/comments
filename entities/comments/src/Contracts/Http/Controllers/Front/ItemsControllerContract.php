@@ -33,17 +33,9 @@ interface ItemsControllerContract
     /**
      * Получаем комментарии к материалу.
      *
-     * @param  ItemsServiceContract  $commentsService
-     * @param  Request  $request
-     * @param  string  $type
-     * @param  string  $id
+     * @param  GetItemsResponseContract  $response
      *
      * @return GetItemsResponseContract
      */
-    public function getItems(
-        ItemsServiceContract $commentsService,
-        Request $request,
-        string $type,
-        string $id
-    ): GetItemsResponseContract;
+    public function getItems(GetItemsResponseContract $response): GetItemsResponseContract;
 }

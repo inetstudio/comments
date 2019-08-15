@@ -47,36 +47,12 @@ class ItemsController extends Controller implements ItemsControllerContract
     /**
      * Получаем комментарии к материалу.
      *
-     * @param  ItemsServiceContract  $commentsService
-     * @param  Request  $request
-     * @param  string  $type
-     * @param  string  $id
+     * @param  GetItemsResponseContract  $response
      *
      * @return GetItemsResponseContract
-     *
-     * @throws BindingResolutionException
      */
-    public function getItems(
-        ItemsServiceContract $commentsService,
-        Request $request,
-        string $type,
-        string $id
-    ): GetItemsResponseContract {
-        $page = ($request->filled('page')) ? $request->get('page') - 1 : 0;
-        $limit = ($request->filled('limit')) ? $request->get('limit') : 3;
-
-        $items = $commentsService->getitemsTreeByTypeAndId($type, $id)->sortByDesc('datetime');
-
-        return $this->app->make(
-            GetItemsResponseContract::class,
-            [
-                'data' => [
-                    'comments' => [
-                        'stop' => (($page + 1) * $limit >= $items->count()),
-                        'items' => $items->slice($page * $limit, $limit),
-                    ],
-                ]
-            ]
-        );
+    public function getItems(GetItemsResponseContract $response): GetItemsResponseContract
+    {
+        return $response;
     }
 }
