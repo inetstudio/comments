@@ -3,6 +3,7 @@
 namespace InetStudio\CommentsPackage\Comments\Services\Front;
 
 use League\Fractal\Manager;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use InetStudio\AdminPanel\Base\Services\BaseService;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\CommentsPackage\Comments\Contracts\Models\CommentModelContract;
@@ -41,6 +42,8 @@ class ItemsService extends BaseService implements ItemsServiceContract
      */
     public function getTypeByModel(string $modelClass): string
     {
+        $modelClass = Relation::getMorphedModel($modelClass) ?? $modelClass;
+
         foreach ($this->availableTypes as $type => $model) {
             $object = app()->make($model);
 
