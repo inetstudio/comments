@@ -93,13 +93,13 @@ class ItemsService extends BaseService implements ItemsServiceContract
             );
         }
 
-        if (isset($parentItem) && ($item['id'] != $parentItem['commentable_id'] || get_class($item) != $parentItem['commentable_type'])) {
+        if (isset($parentItem) && ($item['id'] != $parentItem['commentable_id'] || $item->getTable() != $parentItem['commentable_type'])) {
             return null;
         }
 
         $data = array_merge($data, [
             'commentable_id' => $item->id,
-            'commentable_type' => get_class($item),
+            'commentable_type' => $item->getTable(),
             'user_id' => $usersService->getUserId(),
             'name' => $usersService->getUserName($request),
             'email' => $usersService->getUserEmail($request),
