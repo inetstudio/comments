@@ -168,7 +168,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
 
         $manager = new Manager();
 
-        $serializer = app()->make('InetStudio\AdminPanel\Contracts\Serializers\SimpleDataArraySerializerContract');
+        $serializer = app()->make('InetStudio\AdminPanel\Base\Contracts\Serializers\SimpleDataArraySerializerContract');
         $manager->setSerializer($serializer);
 
         $transformation = $manager->createData($resource)->toArray();
