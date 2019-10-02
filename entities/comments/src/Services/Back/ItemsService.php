@@ -70,7 +70,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
             $parentItem = $this->getItemById(
                 $parentId,
                 [
-                    'columns' => ['_lft', '_rgt']
+                    'columns' => ['_lft', '_rgt'],
                 ]
             );
 
@@ -98,7 +98,6 @@ class ItemsService extends BaseService implements ItemsServiceContract
                 compact('item')
             )
         );
-
 
         if (isset($parentItem) && $item && $item['is_active'] == 1 && $oldActivity !== $item['is_active']) {
             event(

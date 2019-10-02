@@ -20,7 +20,7 @@ return [
 
     'queue' => [
         'enable' => false,
-        'name' => 'comments_notify'
+        'name' => 'comments_notify',
     ],
 
     'commentable' => [

@@ -88,7 +88,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
             $parentItem = $this->getItemById(
                 $parentId,
                 [
-                    'columns' => ['_lft', '_rgt']
+                    'columns' => ['_lft', '_rgt'],
                 ]
             );
         }

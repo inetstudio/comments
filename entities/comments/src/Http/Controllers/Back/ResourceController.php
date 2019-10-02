@@ -119,7 +119,7 @@ class ResourceController extends Controller implements ResourceControllerContrac
         $item = $resourceService->getItemByIdForDisplay(
             $id,
             [
-                'columns' => ['parent_id']
+                'columns' => ['parent_id'],
             ]
         );
 
@@ -200,7 +200,7 @@ class ResourceController extends Controller implements ResourceControllerContrac
         return $this->app->make(
             DestroyResponseContract::class,
             [
-                'result' => (! ! $result),
+                'result' => ((bool) $result),
             ]
         );
     }
