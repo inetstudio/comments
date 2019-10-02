@@ -26,7 +26,6 @@ class CommentModel extends Model implements CommentModelContract
      */
     const ENTITY_TYPE = 'comment';
 
-
     /**
      * Загрузка модели.
      */
