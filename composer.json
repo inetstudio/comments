@@ -10,8 +10,8 @@
     }
   ],
   "require": {
-    "arcanedev/no-captcha": "^10.0",
     "inetstudio/admin-panel": "^6.0",
+    "inetstudio/captcha": "^6.0",
     "kalnoy/nestedset": "^5.0"
   },
   "autoload": {
