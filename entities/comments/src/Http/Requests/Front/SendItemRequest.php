@@ -2,8 +2,8 @@
 
 namespace InetStudio\CommentsPackage\Comments\Http\Requests\Front;
 
-use Arcanedev\NoCaptcha\Rules\CaptchaRule;
 use Illuminate\Foundation\Http\FormRequest;
+use InetStudio\CaptchaPackage\Captcha\Validation\Rules\CaptchaRule;
 use InetStudio\CommentsPackage\Comments\Contracts\Http\Requests\Front\SendItemRequestContract;
 
 /**
