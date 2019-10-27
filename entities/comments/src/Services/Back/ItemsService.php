@@ -5,6 +5,7 @@ namespace InetStudio\CommentsPackage\Comments\Services\Back;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use InetStudio\AdminPanel\Base\Services\BaseService;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\CommentsPackage\Comments\Contracts\Models\CommentModelContract;
@@ -76,6 +77,10 @@ class ItemsService extends BaseService implements ItemsServiceContract
 
             $itemData['commentable_id'] = $parentItem->commentable_id;
             $itemData['commentable_type'] = $parentItem->commentable_type;
+        } else {
+            $morphMap = Relation::morphMap();
+
+            $itemData['commentable_type'] = array_search($itemData['commentable_type'], $morphMap) ?? $itemData['commentable_type'];
         }
 
         if (empty($itemData['name']) || $parentId) {
