@@ -75,7 +75,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
 
         $model = app()->make($this->availableTypes[$type]);
 
-        $usersService = app()->make('InetStudio\ACL\Users\Contracts\Services\Front\UsersServiceContract');
+        $usersService = app()->make('InetStudio\ACL\Users\Contracts\Services\Front\ItemsServiceContract');
 
         $request = request();
         $item = $model::find($id);
