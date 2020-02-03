@@ -78,9 +78,11 @@ class ItemsService extends BaseService implements ItemsServiceContract
             $itemData['commentable_id'] = $parentItem->commentable_id;
             $itemData['commentable_type'] = $parentItem->commentable_type;
         } else {
-            $morphMap = Relation::morphMap();
+            if (isset($itemData['commentable_type'])) {
+                $morphMap = Relation::morphMap();
 
-            $itemData['commentable_type'] = array_search($itemData['commentable_type'], $morphMap) ?? $itemData['commentable_type'];
+                $itemData['commentable_type'] = array_search($itemData['commentable_type'], $morphMap) ?? $itemData['commentable_type'];
+            }
         }
 
         if (empty($itemData['name']) || $parentId) {

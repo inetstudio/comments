@@ -22,11 +22,13 @@ window.tinymce.PluginManager.add('comments', function(editor) {
               data: widgetData,
             },
           ]);
-    } else {
-      let component = window.Admin.vue.modulesComponents.$refs['comments_CommentsWidget'][0];
-
-      component.$data.model.id = widgetData.model.id;
     }
+  }
+
+  function loadWidget() {
+    let component = window.Admin.vue.modulesComponents.$refs['comments_CommentsWidget'][0];
+
+    component.$data.model.id = widgetData.model.id;
   }
 
   editor.addButton('add_comments_widget', {
@@ -56,6 +58,8 @@ window.tinymce.PluginManager.add('comments', function(editor) {
         initCommentsComponents();
 
         window.waitForElement('#add_comments_widget_modal', function() {
+          loadWidget();
+
           $('#add_comments_widget_modal').modal();
         });
       } else {
