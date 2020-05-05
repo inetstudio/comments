@@ -1,1 +1,3 @@
-<a href="{{ $item->href }}" target="_blank">{{ $item->title }}</a>
+@if ($item)
+    <a href="{{ $item->href }}" target="_blank">{{ $item->title }}</a>
+@endif
