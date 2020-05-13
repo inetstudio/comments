@@ -1,5 +1,6 @@
 require('./plugins/tinymce/plugins/comments');
-require('../../../../../../widgets/resources/assets/js/mixins/widget');
+
+require('../../../../../../widgets/entities/widgets/resources/assets/js/mixins/widget');
 
 Vue.component(
     'CommentsWidget',

@@ -12,21 +12,8 @@ window.tinymce.PluginManager.add('comments', function(editor) {
     },
   };
 
-  function initCommentsComponents() {
-    if (typeof window.Admin.vue.modulesComponents.$refs['comments_CommentsWidget'] ==
-        'undefined') {
-      window.Admin.vue.modulesComponents.modules.comments.components = _.union(
-          window.Admin.vue.modulesComponents.modules.comments.components, [
-            {
-              name: 'CommentsWidget',
-              data: widgetData,
-            },
-          ]);
-    }
-  }
-
   function loadWidget() {
-    let component = window.Admin.vue.modulesComponents.$refs['comments_CommentsWidget'][0];
+    let component = window.Admin.vue.helpers.getVueComponent('comments', 'CommentsWidget');
 
     component.$data.model.id = widgetData.model.id;
   }
@@ -55,7 +42,7 @@ window.tinymce.PluginManager.add('comments', function(editor) {
           id: parseInt($(content).attr('data-id')) || 0,
         };
 
-        initCommentsComponents();
+        window.Admin.vue.helpers.initComponent('comments', 'CommentsWidget', widgetData);
 
         window.waitForElement('#add_comments_widget_modal', function() {
           loadWidget();
