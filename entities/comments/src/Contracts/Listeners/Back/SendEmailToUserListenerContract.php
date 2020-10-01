@@ -7,4 +7,5 @@ namespace InetStudio\CommentsPackage\Comments\Contracts\Listeners\Back;
  */
 interface SendEmailToUserListenerContract
 {
+    public function handle($event): void;
 }

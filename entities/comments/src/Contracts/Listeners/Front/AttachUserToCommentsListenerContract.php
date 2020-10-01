@@ -7,4 +7,5 @@ namespace InetStudio\CommentsPackage\Comments\Contracts\Listeners\Front;
  */
 interface AttachUserToCommentsListenerContract
 {
+    public function handle($event): void;
 }
