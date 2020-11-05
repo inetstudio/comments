@@ -17,7 +17,7 @@ class SendEmailToAdminListener implements SendEmailToAdminListenerContract
      *
      * @throws BindingResolutionException
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $item = $event->item;
 

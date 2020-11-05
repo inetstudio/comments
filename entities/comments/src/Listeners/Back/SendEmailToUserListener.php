@@ -17,7 +17,7 @@ class SendEmailToUserListener implements SendEmailToUserListenerContract
      *
      * @throws BindingResolutionException
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $item = $event->item;
 
