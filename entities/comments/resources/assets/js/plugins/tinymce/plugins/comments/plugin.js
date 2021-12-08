@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 window.tinymce.PluginManager.add('comments', function(editor) {
   let widgetData = {
     widget: {
@@ -25,10 +27,10 @@ window.tinymce.PluginManager.add('comments', function(editor) {
       let content = editor.selection.getContent();
 
       if ($('#object-id').val() === '') {
-        swal({
+        Swal.fire({
           title: 'Ошибка',
           text: 'Для добавления виджета необходимо сохранить материал',
-          type: 'error',
+          icon: 'error',
         });
 
         return false;
@@ -50,10 +52,10 @@ window.tinymce.PluginManager.add('comments', function(editor) {
           $('#add_comments_widget_modal').modal();
         });
       } else {
-        swal({
+        Swal.fire({
           title: 'Ошибка',
           text: 'Необходимо выбрать виджет-вопрос',
-          type: 'error',
+          icon: 'error',
         });
 
         return false;
