@@ -100,6 +100,7 @@
 
                                         {!! Form::hidden('is_read', 1) !!}
 
+                                        {!! Form::hidden('name', $item->name) !!}
                                         {!! Form::string('name', $item->name, [
                                             'label' => [
                                                 'title' => 'Имя',
@@ -109,6 +110,7 @@
                                             ],
                                         ]) !!}
 
+                                        {!! Form::hidden('email', $item->email) !!}
                                         {!! Form::string('email', $item->email, [
                                             'label' => [
                                                 'title' => 'Email',
@@ -118,6 +120,7 @@
                                             ],
                                         ]) !!}
 
+                                        {!! Form::hidden('message', $item->message) !!}
                                         {!! Form::wysiwyg('message', $item->message, [
                                             'label' => [
                                                 'title' => 'Сообщение',
