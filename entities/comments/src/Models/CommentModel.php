@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use InetStudio\ACL\Users\Models\Traits\HasUser;
+use InetStudio\Uploads\Models\Traits\HasImages;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use InetStudio\AdminPanel\Base\Models\Traits\Scopes\BuildQueryScopeTrait;
 use InetStudio\CommentsPackage\Comments\Contracts\Models\CommentModelContract;
@@ -17,9 +18,15 @@ use InetStudio\CommentsPackage\Comments\Contracts\Models\CommentModelContract;
 class CommentModel extends Model implements CommentModelContract
 {
     use NodeTrait;
+    use HasImages;
     use Notifiable;
     use SoftDeletes;
     use BuildQueryScopeTrait;
+
+    protected $images = [
+        'config' => 'comments',
+        'model' => 'comment',
+    ];
 
     /**
      * Тип сущности.

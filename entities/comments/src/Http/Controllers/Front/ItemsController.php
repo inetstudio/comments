@@ -3,6 +3,7 @@
 namespace InetStudio\CommentsPackage\Comments\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use InetStudio\AdminPanel\Base\Http\Controllers\Controller;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\CommentsPackage\Comments\Contracts\Services\Front\ItemsServiceContract;
@@ -36,6 +37,7 @@ class ItemsController extends Controller implements ItemsControllerContract
     ): SendResponseContract {
         $data = $request->only($commentsService->getModel()->getFillable());
         $parentId = $request->get('parent_comment_id', 0);
+        $data['files'] = Arr::flatten(Arr::wrap($request->allFiles()));
 
         $item = $commentsService->save($data, $type, $id, $parentId);
 

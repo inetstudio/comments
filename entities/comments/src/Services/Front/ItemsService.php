@@ -113,6 +113,13 @@ class ItemsService extends BaseService implements ItemsServiceContract
             $item->saveAsRoot();
         }
 
+        $files = [
+            'files' => $data['files'],
+        ];
+
+        app()->make('InetStudio\Uploads\Contracts\Services\Front\ItemsServiceContract')
+            ->attachFilesToObject($item, $files, 'comments');
+
         if ($item && $item->id) {
             event(
                 app()->make(

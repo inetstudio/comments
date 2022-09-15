@@ -26,4 +26,30 @@ return [
     'commentable' => [
         'article' => 'InetStudio\Articles\Contracts\Models\ArticleModelContract',
     ],
+
+    'images' => [
+        'quality' => 100,
+        'conversions' => [
+            'comment' => [
+                'files' => [
+                    'default' => [
+                        [
+                            'name' => 'comment_admin_index',
+                            'fit' => [
+                                'width' => 140,
+                                'height' => 140,
+                            ],
+                        ],
+                        [
+                            'name' => 'comment_front',
+                            'fit' => [
+                                'width' => 160,
+                                'height' => 160,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];
