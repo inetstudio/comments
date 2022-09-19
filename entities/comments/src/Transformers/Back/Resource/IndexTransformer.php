@@ -46,6 +46,8 @@ class IndexTransformer extends TransformerAbstract implements IndexTransformerCo
             )->render(),
             'name' => $item['name'],
             'email' => $item['email'],
+            'media' => view('admin.module.comments::back.partials.datatables.media', compact('item'))
+                ->render(),
             'message' => $item['message'],
             'created_at' => (string) $item['created_at'],
             'material' => view(

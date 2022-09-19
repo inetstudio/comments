@@ -101,6 +101,7 @@ class DataTableService extends DataTable implements DataTableServiceContract
             ['data' => 'active', 'name' => 'is_active', 'title' => 'Активность', 'searchable' => false],
             ['data' => 'name', 'name' => 'name', 'title' => 'Имя'],
             ['data' => 'email', 'name' => 'email', 'title' => 'Email'],
+            ['data' => 'media', 'name' => 'media', 'title' => 'Медиа', 'orderable' => false, 'searchable' => false],
             ['data' => 'message', 'name' => 'message', 'title' => 'Сообщение'],
             ['data' => 'created_at', 'name' => 'created_at', 'title' => 'Дата создания'],
             [
