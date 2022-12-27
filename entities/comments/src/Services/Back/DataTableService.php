@@ -145,7 +145,7 @@ class DataTableService extends DataTable implements DataTableServiceContract
 
         return [
             'order' => [
-                6,
+                7,
                 'desc',
             ],
             'paging' => true,

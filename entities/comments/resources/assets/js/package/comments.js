@@ -67,11 +67,11 @@ export let comments = {
 
       let $switchers = $table.find('input.switchery');
 
-      $switchers.each(function() {
+      /*$switchers.each(function() {
         new Switchery($(this).get(0), {
           size: 'small',
         });
-      });
+      });*/
 
       $switchers.on('change', function() {
         let $input = $(this);
