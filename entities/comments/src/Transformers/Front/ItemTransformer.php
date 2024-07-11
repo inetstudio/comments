@@ -16,7 +16,7 @@ class ItemTransformer extends TransformerAbstract implements ItemTransformerCont
     /**
      * @var array
      */
-    protected $defaultIncludes = [
+    protected array $defaultIncludes = [
         'items',
     ];
 
